@@ -493,6 +493,46 @@ function download(){
   const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="tzofen.ics";
   document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove()},1500);
 }
+/* ---------- phones: open the real apps ----------
+   Added to the home screen, the page can run as its own little app, where links open inside it.
+   On a phone, Google links go to their apps and everything else opens in the real browser.
+   If an app is missing, the normal web page opens instead. Computers keep plain new tabs. */
+const UA = navigator.userAgent;
+const IOS = /iPhone|iPad|iPod/.test(UA) || (navigator.platform==="MacIntel" && navigator.maxTouchPoints>1);
+const ANDROID = /Android/.test(UA);
+const STANDALONE = window.navigator.standalone === true || matchMedia("(display-mode: standalone)").matches;
+const ANDROID_PKG = {"calendar.google.com":"com.google.android.calendar","mail.google.com":"com.google.android.gm","drive.google.com":"com.google.android.apps.docs"};
+function appUrl(href){
+  let u; try{ u=new URL(href) }catch(e){ return null }
+  if (u.protocol!=="https:") return null;
+  if (IOS){
+    if (u.host==="calendar.google.com") return "googlecalendar://";
+    if (u.host==="mail.google.com") return "googlegmail://";
+    if (u.host==="drive.google.com") return "googledrive://" + href;
+    return STANDALONE ? "x-safari-" + href : null;          // Lemida, Zoom pages: open in Safari itself
+  }
+  if (ANDROID){
+    const fb = ";S.browser_fallback_url=" + encodeURIComponent(href) + ";end";
+    const pkg = ANDROID_PKG[u.host];
+    if (pkg && u.host==="drive.google.com") return "intent://" + u.host + u.pathname + u.search + "#Intent;scheme=https;package=" + pkg + fb;
+    if (pkg) return "intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=" + pkg + fb;
+    return STANDALONE ? "intent://" + u.host + u.pathname + u.search + "#Intent;scheme=https;package=com.android.chrome" + fb : null;
+  }
+  return null;
+}
+document.addEventListener("click", e=>{
+  const a = e.target.closest && e.target.closest("a[href]");
+  if (!a || !(IOS||ANDROID)) return;
+  const app = appUrl(a.href);
+  if (!app) return;
+  e.preventDefault();
+  const web = a.href;
+  location.href = app;
+  if (IOS){  // no app (or old iOS): if we are still here, open the normal page
+    setTimeout(()=>{ if (!document.hidden) window.open(web, "_blank") }, 1400);
+  }
+});
+
 const pin=document.getElementById("pin");
 document.getElementById("foot-pin").onclick=()=>{
   const u=document.getElementById("pin-url"); u.value=location.href.split("#")[0]+(DRIVE_ID?"#d="+DRIVE_ID:""); pin.showModal(); u.select();
