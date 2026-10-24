@@ -116,6 +116,9 @@ font-weight:700;font-size:.95rem;text-decoration:none;white-space:nowrap;box-sha
 .tag[hidden]{display:none}
 .note{margin:12px 0 0;color:var(--dusk-d);font-weight:700}
 .empty{margin:16px 0 4px;color:var(--ink-2);font-size:1.1rem}
+.upnext{margin-top:18px;padding-top:6px;border-top:2px solid var(--ink)}
+.upnext h3.uh{margin:10px 0 0;font:400 1.5rem/1.2 "Suez One",serif}
+.upnext .uh small{display:block;margin-top:4px;font:500 1rem "Heebo",sans-serif;color:var(--ink-2)}
 .clear{display:flex;align-items:center;gap:16px;padding:16px 0 4px}
 .clear svg{width:54px;height:54px;fill:var(--pine);stroke:none}
 .clear svg path{fill:none;stroke:var(--paper);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
@@ -430,7 +433,17 @@ function dlHtml(st,now){
   }
   return `<header class="hd"><h2 id="h-dl">דדליינים</h2></header>${body}`;
 }
-function dayHtml(iso,rel,list,now){
+/* the next day that has classes, for days with none (classes fall on only a few weekdays) */
+function gapDays(a,b){ return Math.round((new Date(b+"T12:00:00Z")-new Date(a+"T12:00:00Z"))/864e5) }
+function upNextHtml(iso,today,list){
+  const first=list.find(s=>s.date>iso);
+  if (!first) return "";
+  const day=first.date, n=gapDays(today,day), d=new Date(day+"T12:00:00Z");
+  const far=n===2?"בעוד יומיים":`בעוד ${n} ימים`;
+  return `<div class="upnext"><h3 class="uh">השיעורים הבאים<small>${DAYS[d.getUTCDay()]} ${d.getUTCDate()}.${d.getUTCMonth()+1} · ${far}</small></h3>`+
+    `<ol class="list">${list.filter(s=>s.date===day).map(s=>rowHtml(s,"","")).join("")}</ol></div>`;
+}
+function dayHtml(iso,rel,list,now,withNext){
   const d=new Date(iso+"T12:00:00Z");
   const items=list.filter(s=>s.date===iso);
   const isToday = iso===now.date;
@@ -449,6 +462,7 @@ function dayHtml(iso,rel,list,now){
       return rowHtml(s,state,soon);
     }).join("")+`</ol>`;
   } else if (!HOLIDAYS[iso]) body+=`<p class="empty">יום פנוי. אין שיעורים.</p>`;
+  if (!items.length && withNext) body+=upNextHtml(iso,now.date,list);
   return `<header class="hd"><h2>${rel}</h2><p>${DAYS[d.getUTCDay()]} ${d.getUTCDate()}.${d.getUTCMonth()+1}</p></header>${body}`;
 }
 function phase(min){ return min<5*60?"night":min<9*60?"dawn":min<16*60?"day":min<19*60?"golden":"night" }
@@ -467,7 +481,8 @@ function render(force){
   const list=S?sessionsFor(S):[];
   // the day that matters gets the big slab: today while it still has classes left, otherwise tomorrow
   const todayLeft = list.some(s=>s.date===now.date && toMin(s.end)>now.min);
-  const t=dayHtml(now.date,"היום",list,now), m=dayHtml(addDays(now.date,1),"מחר",list,now);
+  // a free tomorrow also says when classes resume
+  const t=dayHtml(now.date,"היום",list,now), m=dayHtml(addDays(now.date,1),"מחר",list,now,true);
   document.getElementById("lead").innerHTML = todayLeft ? t : m;
   document.getElementById("side").innerHTML = todayLeft ? m : t;
   document.getElementById("dl").innerHTML = dlHtml(S,now);
