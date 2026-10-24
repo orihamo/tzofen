@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl" data-phase="night">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="referrer" content="no-referrer">
 <link rel="apple-touch-icon" href="icon2-180.png">
@@ -140,6 +140,11 @@ font-weight:700;font-size:.95rem;text-decoration:none;white-space:nowrap;box-sha
 @media (prefers-reduced-motion:no-preference){.slab{animation:set .8s cubic-bezier(.16,1,.3,1) both}
 .col>:nth-child(1){animation-delay:.07s}.col>:nth-child(2){animation-delay:.14s}
 @keyframes set{from{transform:translateY(14px);box-shadow:0 0 0 rgba(14,20,34,0)}}}
+
+/* iPhone: the page runs under the notch / Dynamic Island, so keep content inside the safe area; on phones "today" always comes first */
+.wrap{padding-top:max(34px,env(safe-area-inset-top));padding-right:max(40px,env(safe-area-inset-right));padding-bottom:max(28px,env(safe-area-inset-bottom));padding-left:max(40px,env(safe-area-inset-left))}
+@media (max-width:760px){.wrap{padding-top:max(22px,env(safe-area-inset-top));padding-right:max(16px,env(safe-area-inset-right));padding-bottom:max(20px,env(safe-area-inset-bottom));padding-left:max(16px,env(safe-area-inset-left))}
+.col{display:contents}.side,.rail{grid-column:span 12}[data-day=today]{order:1}[data-day=tomorrow]{order:2}.rail{order:3}}
 
 /* kit-only pieces: settings item in the link strip, button pair, setup dialog */
 .acts .pair{display:flex;gap:8px}.acts .pair .go{flex:1;text-align:center}
@@ -485,6 +490,8 @@ function render(force){
   const t=dayHtml(now.date,"היום",list,now), m=dayHtml(addDays(now.date,1),"מחר",list,now,true);
   document.getElementById("lead").innerHTML = todayLeft ? t : m;
   document.getElementById("side").innerHTML = todayLeft ? m : t;
+  document.getElementById("lead").dataset.day = todayLeft ? "today" : "tomorrow";
+  document.getElementById("side").dataset.day = todayLeft ? "tomorrow" : "today";
   document.getElementById("dl").innerHTML = dlHtml(S,now);
 }
 
