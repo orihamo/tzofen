@@ -3577,9 +3577,15 @@ DESCRIPTION:למדה: https://lemida.biu.ac.il/mod/assign/view.php?id=32608
  93
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:להעלות ללמדה את מטלה 1 בבינה מלאכות
- ית (חמש התנסויות ב-AI)
+DESCRIPTION:הגשה מחר: להעלות ללמדה את מטלה 1 בבי
+ נה מלאכותית (חמש התנסויות ב-AI)
 TRIGGER:-P1D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:הגשה בעוד שעתיים: להעלות ללמדה את מ
+ טלה 1 בבינה מלאכותית (חמש התנסויות ב-AI)
+TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
@@ -3592,9 +3598,15 @@ SUMMARY:הגשה: מבוא לסייבר: בוחן: Stuxnet והמצב 15 ש
 DESCRIPTION:למדה: https://lemida.biu.ac.il/mod/quiz/view.php?id=3288960
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:מבוא לסייבר: בוחן: Stuxnet והמצב 15 שנים
-  אחרי הגילוי
+DESCRIPTION:הגשה מחר: מבוא לסייבר: בוחן: Stuxnet וה
+ מצב 15 שנים אחרי הגילוי
 TRIGGER:-P1D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:הגשה בעוד שעתיים: מבוא לסייבר: בוחן
+ : Stuxnet והמצב 15 שנים אחרי הגילוי
+TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
@@ -3607,9 +3619,16 @@ SUMMARY:הגשה: מבוא לסייבר: 1. בוחן על "מבט בינת
 DESCRIPTION:למדה: https://lemida.biu.ac.il/mod/quiz/view.php?id=3282860
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:מבוא לסייבר: 1. בוחן על "מבט בינתחומ
- י על אתגרי הביטחון בעידן המידע"
+DESCRIPTION:הגשה מחר: מבוא לסייבר: 1. בוחן על "מב
+ ט בינתחומי על אתגרי הביטחון בעידן המידע"
 TRIGGER:-P1D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:הגשה בעוד שעתיים: מבוא לסייבר: 1. בו
+ חן על "מבט בינתחומי על אתגרי הביטחון בעיד
+ ן המידע"
+TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
@@ -3637,7 +3656,14 @@ SUMMARY:ניהול משא ומתן: בחינה בחומר סגור
 DESCRIPTION:מקור: לו"ז צופן\nמועד ב': 21.02 18:00
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:ניהול משא ומתן: בחינה בחומר סגור
+DESCRIPTION:מבחן בעוד 3 ימים: ניהול משא ומתן: בח
+ ינה בחומר סגור
+TRIGGER:-P3D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:מבחן מחר: ניהול משא ומתן: בחינה בחו
+ מר סגור
 TRIGGER:-P1D
 END:VALARM
 END:VEVENT
@@ -3650,7 +3676,12 @@ SUMMARY:סטטיסטיקה א': מבחן
 DESCRIPTION:מקור: לו"ז צופן\nמועד ב': 14.03 18:00
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:סטטיסטיקה א': מבחן
+DESCRIPTION:מבחן בעוד 3 ימים: סטטיסטיקה א': מבחן
+TRIGGER:-P3D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:מבחן מחר: סטטיסטיקה א': מבחן
 TRIGGER:-P1D
 END:VALARM
 END:VEVENT
@@ -3663,7 +3694,14 @@ SUMMARY:מבוא לסייבר: מבחן מחצית (חלק א')
 DESCRIPTION:מקור: לו"ז צופן\nמועד ב': 21.03 18:00
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:מבוא לסייבר: מבחן מחצית (חלק א')
+DESCRIPTION:מבחן בעוד 3 ימים: מבוא לסייבר: מבחן 
+ מחצית (חלק א')
+TRIGGER:-P3D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:מבחן מחר: מבוא לסייבר: מבחן מחצית (ח
+ לק א')
 TRIGGER:-P1D
 END:VALARM
 END:VEVENT
@@ -3676,8 +3714,14 @@ SUMMARY:מבוא למינהל ומדיניות ציבורית: בחינה
 DESCRIPTION:מקור: לו"ז צופן\nמועד ב': 11.04 18:00
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:מבוא למינהל ומדיניות ציבורית: בחינ
- ה
+DESCRIPTION:מבחן בעוד 3 ימים: מבוא למינהל ומדינ
+ יות ציבורית: בחינה
+TRIGGER:-P3D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:מבחן מחר: מבוא למינהל ומדיניות ציב
+ ורית: בחינה
 TRIGGER:-P1D
 END:VALARM
 END:VEVENT
@@ -3690,7 +3734,13 @@ SUMMARY:מבוא לסייבר: מבחן סוף שנה
 DESCRIPTION:מקור: לו"ז צופן\nמועד ב': 22.08 18:00
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:מבוא לסייבר: מבחן סוף שנה
+DESCRIPTION:מבחן בעוד 3 ימים: מבוא לסייבר: מבחן 
+ סוף שנה
+TRIGGER:-P3D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:מבחן מחר: מבוא לסייבר: מבחן סוף שנה
 TRIGGER:-P1D
 END:VALARM
 END:VEVENT
@@ -3704,8 +3754,14 @@ SUMMARY:יסודות הביטחון הלאומי בישראל: מבחן ס
 DESCRIPTION:מקור: לו"ז צופן\nמועד ב': 29.08
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:יסודות הביטחון הלאומי בישראל: מבחן
-  סופי
+DESCRIPTION:מבחן בעוד 3 ימים: יסודות הביטחון הל
+ אומי בישראל: מבחן סופי
+TRIGGER:-P3D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:מבחן מחר: יסודות הביטחון הלאומי בי
+ שראל: מבחן סופי
 TRIGGER:-P1D
 END:VALARM
 END:VEVENT
