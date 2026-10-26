@@ -1,6 +1,6 @@
 /* היום ומחר - offline copy. Network first for the page and the calendar feeds; the last good copy when there is
    no signal. The cache name changes with every build, so a new page replaces the old copy. */
-const V = "tzofen-7c66bd75c137";
+const V = "tzofen-490decba2a7b";
 self.addEventListener("install", e => self.skipWaiting());
 self.addEventListener("activate", e => e.waitUntil((async () => {
   for (const k of await caches.keys()) if (k !== V) await caches.delete(k);
