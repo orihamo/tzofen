@@ -1,6 +1,6 @@
 /* היום ומחר - offline copy. Network first for the page and the calendar feeds; the last good copy when there is
    no signal. The cache name changes with every build, so a new page replaces the old copy. */
-const V = "tzofen-4e01afdcda56";
+const V = "tzofen-d5b89c39b1d5";
 self.addEventListener("install", e => self.skipWaiting());
 self.addEventListener("activate", e => e.waitUntil((async () => {
   for (const k of await caches.keys()) if (k !== V) await caches.delete(k);
@@ -40,11 +40,11 @@ self.addEventListener("push", e => {
   try { d = e.data ? e.data.json() : {}; } catch (err) { d = {}; }
   e.waitUntil(self.registration.showNotification(d.title || "היום ומחר", {
     body: d.body || "חמש שאלות, שלוש דקות.", icon: "icon4-192.png", badge: "icon4-192.png", lang: "he", dir: "rtl",
-    tag: "daily5", data: {url: d.url || "practice.html"}}));
+    tag: "daily5", data: {url: d.url || "./?t=prac"}}));
 });
 self.addEventListener("notificationclick", e => {
   e.notification.close();
-  const to = new URL((e.notification.data && e.notification.data.url) || "practice.html", self.registration.scope).href;
+  const to = new URL((e.notification.data && e.notification.data.url) || "./?t=prac", self.registration.scope).href;
   e.waitUntil(self.clients.matchAll({type: "window", includeUncontrolled: true}).then(list => {
     for (const c of list) { if ("navigate" in c && c.url !== to) { return c.navigate(to).then(w => w && w.focus()); } if ("focus" in c) return c.focus(); }
     return self.clients.openWindow(to);
