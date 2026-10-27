@@ -843,18 +843,9 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 S = load() || fresh();
 function today(){return addDays(parse(S.base),S.offset)}
 
-/* long definitions are shown by their first sentence; the full text stays in the explanation */
-function short(t,max){
-  max = max||100;
-  var m = t.match(/^(.{18,}?[.:;])\s/), s = m ? m[1] : t, cut = s.length < t.length;
-  if(s.length>max){ s = s.slice(0,max); var i = s.lastIndexOf(" "); if(i>40) s = s.slice(0,i); cut = true }
-  return cut ? s.replace(/[.:;,\s]+$/,"")+"…" : t;
-}
-function shorts(list,max){
-  var sh = list.map(function(t){return short(t,max)}), u = {};
-  sh.forEach(function(x){u[x]=1});
-  return Object.keys(u).length===list.length ? sh : list;
-}
+/* Text the student has to read to answer is never shortened: a cut claim ("...") cannot be judged. */
+function short(t){ return t }
+function shorts(list){ return list }
 
 function streak(){
   var cur = today(), n = 0, rest = {};
@@ -973,10 +964,12 @@ function pick(){
   /* exam-style multiple choice ("mcq"): never the first card, at most 2 a session (slots 2 and 4); slot 2 only for one that is due */
   var mc = CARDS.filter(function(c){return c.type==="mcq"}).sort(sortP);
   function takeMc(dueOnly){ for(var i=0;i<mc.length;i++){ if(!used[mc[i].id] && (!dueOnly || prio(mc[i])===0)){ used[mc[i].id]=1; return mc[i] } } return null }
-  var out = [take(tf) || takeRecog()];                       // easiest card first
+  var first = take(tf) || take(seenRec), newUsed = false;    // easiest card first: a flip card, never a drag-match
+  if(!first){ first = take(newRec); newUsed = !!first }
+  var out = [first || takeRecog()];
   out.push(takeMc(true) || takeRecog());
-  var r1 = take(seenRec), newUsed = false;
-  if(!r1){ r1 = take(newRec); newUsed = !!r1 }
+  var r1 = take(seenRec);
+  if(!r1 && !newUsed){ r1 = take(newRec); newUsed = !!r1 }
   out.push(r1);
   out.push(takeMc(false) || takeRecog() || take(tf));
   var r2 = take(seenRec);
@@ -1094,7 +1087,7 @@ function drawCard(){
     }
   } else if(c.type==="true_false"){
     card.appendChild(el("p","q", c.prompt));
-    card.appendChild(el("p","claim", short(c.claim,150)));
+    card.appendChild(el("p","claim", c.claim));
     var o2 = el("div","opts tf");
     c.options.forEach(function(t){
       var b = el("button","opt"); b.type="button"; b.dataset.full = t;
@@ -1312,6 +1305,7 @@ function answerMC(c, btn, group, good){
 function revealRecall(c, card){
   var dock = $("#dock"); dock.textContent = "";
   var hint = card.querySelector(".src"); if(hint && hint.textContent.indexOf("חשבו")===0) hint.remove();
+  var hb = card.querySelector(".hintbox"); if(hb) hb.remove();   // the full answer replaces the hint
   var r = el("div","reveal", c.answer); card.insertBefore(r, card.lastChild);
   var e = c.explain, extra = [];
   if(e.example) extra.push(["דוגמה",e.example]); if(e.link) extra.push(["הקשר לקורס",e.link]);
