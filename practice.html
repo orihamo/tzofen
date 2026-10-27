@@ -203,6 +203,10 @@ body{padding-bottom:calc(env(safe-area-inset-bottom) + 84px)}
 .d5nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .embed .d5nav,.embed .backlink{display:none!important}
 .embed body{padding-bottom:20px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{font:inherit;min-height:44px;padding:0 14px;border:1px solid var(--line2);border-radius:999px;background:var(--surface);color:var(--ink2);cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.seg button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 .backlink{font-weight:500;color:var(--ink2);text-decoration:underline;text-underline-offset:3px}
 </style>
 </head>
@@ -211,7 +215,8 @@ body{padding-bottom:calc(env(safe-area-inset-bottom) + 84px)}
 
 <main id="gate" class="gate" hidden>
   <h1>תרגול יומי</h1>
-  <p id="gate-msg">התרגול פתוח למי שאורי אישר. הדביקו כאן את הקישור האישי שקיבלתם, או את הקוד שבסופו.</p>
+  <p id="gate-msg">התרגול פתוח לכיתה. הדביקו כאן, פעם אחת, את הקישור לדף ששלח אורי בקבוצת הוואטסאפ.</p>
+  <button class="btn wide" id="gate-paste" type="button">הדביקו מהלוח</button>
   <textarea id="gate-in" rows="3" aria-label="קישור או קוד אישי" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
   <button class="btn primary wide" id="gate-go" type="button">פתחו</button>
   <p class="err" id="gate-err" role="status"></p>
@@ -246,10 +251,21 @@ body{padding-bottom:calc(env(safe-area-inset-bottom) + 84px)}
     <p class="meta" id="ciphernote"></p>
   </section>
 
+  <section class="block" id="more">
+    <h2>ללמוד עוד</h2>
+    <div class="seg" role="group" aria-label="סוג השאלות">
+      <button type="button" data-mode="all" aria-pressed="true">הכל</button>
+      <button type="button" data-mode="exam" aria-pressed="false">שאלות בחינה</button>
+      <button type="button" data-mode="concepts" aria-pressed="false">מושגים</button>
+    </div>
+    <button class="btn wide" id="more-go" type="button">עוד חמש שאלות</button>
+    <p class="meta" id="morenote"></p>
+  </section>
+
   <section class="block">
     <h2>מוכנות לפי התרגול</h2>
     <div class="ready" id="ready"></div>
-    <p class="meta">אפשר ללחוץ על קורס כדי לתרגל רק אותו. זה לא משפיע על הרצף. ההתקדמות היא בתרגול ולא הערכה של הציון.</p>
+    <p class="meta">אפשר ללחוץ על קורס כדי לתרגל רק אותו, לפי הסוג שבחרתם למעלה. זה לא משפיע על הרצף. ההתקדמות היא בתרגול ולא הערכה של הציון.</p>
   </section>
 
   <section class="block" id="remind" data-d5n="section" hidden></section>
@@ -288,7 +304,8 @@ body{padding-bottom:calc(env(safe-area-inset-bottom) + 84px)}
     <p class="label">השורה הסודית</p>
     <div class="cipher" id="e-cipher" style="margin-top:6px"></div>
   </div>
-  <button class="btn primary wide" id="e-close">חזרה למסך הראשי</button>
+  <button class="btn primary wide" id="e-more" type="button">עוד חמש שאלות</button>
+  <button class="btn wide" id="e-close">חזרה למסך הראשי</button>
 </main>
 
 </div>
@@ -337,6 +354,11 @@ body{padding-bottom:calc(env(safe-area-inset-bottom) + 84px)}
     s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "=";
     var r = atob(s), o = new Uint8Array(r.length); for (var i = 0; i < r.length; i++) o[i] = r.charCodeAt(i); return o;
   }
+  /* Reminders are off for everyone until a banner has landed from the live app and the sender runs by itself.
+     Ori switches them on for his own device by opening practice with his personal link (daily5-rem = 1);
+     flip REM_PUBLIC to true to switch them on for the whole class. */
+  var REM_PUBLIC = false;
+  function enabled() { return REM_PUBLIC || store("daily5-rem") === "1"; }
   function formReady() { return FORM_URL.indexOf("https://") === 0 && FORM_FIELDS && FORM_FIELDS.id; }
   function unlocked() { return /^[A-Za-z0-9_-]{43}$/.test(store(K.key) || ""); }
   function deviceId() {
@@ -433,6 +455,7 @@ body{padding-bottom:calc(env(safe-area-inset-bottom) + 84px)}
   function canPush() { return "serviceWorker" in navigator && "PushManager" in window && "Notification" in window; }
   /* unsupported | install (iPhone, not opened from the Home Screen) | denied | on (has saved prefs) | setup */
   function state() {
+    if (!enabled()) return "off";
     if (!formReady()) return "unsupported";
     if (!canPush()) return isIos() && !standalone() ? "install" : "unsupported";
     if (Notification.permission === "denied") return "denied";
@@ -603,6 +626,7 @@ body{padding-bottom:calc(env(safe-area-inset-bottom) + 84px)}
 
   function render(m) {
     var host = m.host, st = state(), ui = m.ui, box, focusEl = null;
+    if (st === "off") { host.textContent = ""; host.hidden = true; return; }
     host.textContent = ""; host.classList.add("d5n"); host.setAttribute("dir", "rtl"); host.setAttribute("lang", "he");
     if (m.kind === "card") {
       var show = ui.phase !== "closed" && (ui.phase === "done" || ui.phase === "form" || (!snoozed() && (st === "setup" || st === "install" || st === "denied")));
@@ -675,6 +699,7 @@ body{padding-bottom:calc(env(safe-area-inset-bottom) + 84px)}
     var acts = document.querySelector(".foot .acts");
     if (!acts || document.getElementById("foot-notify") || !document.querySelector("[data-d5n=card]")) return;
     var st = state();
+    if (st === "off") return;
     if (st === "unsupported" && !unlocked()) return;
     var b = el("button", "btn", "תזכורות"); b.type = "button"; b.id = "foot-notify";
     b.addEventListener("click", openPanel);
@@ -866,6 +891,10 @@ function renderHome(){
   var sh = $("#say-home"); sh.textContent = "";
   sh.appendChild(sayBlock(isDone?"happy":"neutral", isDone ? say("homeDone") : say("home", Math.round((t-parse(S.base))/86400000)+t.getDate()), 3));
   $("#startnote").textContent = isDone ? "סיימתם להיום. נתראה מחר." : "5 כרטיסים, בערך 3 דקות.";
+  var mg = $("#more-go"); if(mg) mg.className = "btn wide"+(isDone?" primary":"");
+  [].forEach.call(document.querySelectorAll("#more [data-mode]"), function(b){ b.setAttribute("aria-pressed", String((S.mode||"all")===b.dataset.mode)) });
+  var ex = CARDS.filter(function(c){return c.type==="mcq"}).length, mn = $("#morenote");
+  if(mn && !mn.dataset.flash) mn.textContent = "בבנק "+CARDS.length+" שאלות, "+ex+" מהן בסגנון בחינה. אפשר להמשיך בלי הגבלה, כשנגמרות החדשות הן חוזרות לחזרה. זה לא משפיע על הרצף.";
   renderCipher($("#cipher"), false);
   var n = doneThisWeek();
   $("#ciphernote").textContent = n===0 ? "כל יום תרגול חושף עוד מילים מהשורה." : "נחשפו "+revealCount(n)+" מתוך "+CIPHER.length+" מילים. ביום השישי היא מלאה.";
@@ -905,7 +934,7 @@ function renderReady(){
     var tr = el("div","track"); var f = document.createElement("i"); f.style.width = Math.round(100*c.stable/c.total)+"%"; tr.appendChild(f); row.appendChild(tr);
     row.appendChild(el("span","meta num",c.stable+" מתוך "+c.total+" יציבים"));
     var ch = el("span","chv"); ch.innerHTML = CHEV; row.appendChild(ch);
-    row.addEventListener("click",function(){ startFree(c.key) });
+    row.addEventListener("click",function(){ startMore(c.key) });
     box.appendChild(row);
   });
 }
@@ -958,21 +987,39 @@ function show(id){
   window.scrollTo(0,0);
 }
 function begin(cards, free, name){
+  cards.forEach(function(c){ sitting[c.id] = 1 });
   run = {cards:cards, i:0, ok:0, hint:0, xp:0, combo:0, misses:[], locked:false, free:free, name:name, hinted:false};
   show("#session"); drawBar(); drawCard();
 }
-function start(){ begin(pick(), false, "") }
-function startFree(key){
-  /* free practice in a course: mostly exam-style questions (up to 4 of 5), the rest filled from the other types */
-  var all = CARDS.filter(function(c){return c.course_key===key}).sort(sortP);
-  var mcs = all.filter(function(c){return c.type==="mcq"}).slice(0,4);
-  var list = mcs.concat(all.filter(function(c){return c.type!=="mcq"}).slice(0,5-mcs.length));
-  var i = -1;
-  list.forEach(function(c,ix){ if(i<0 && c.type==="true_false") i = ix });
-  if(i>0){ var f = list.splice(i,1)[0]; list.unshift(f) }
-  if(!list.length) return;
-  begin(list, true, list[0].course);
+function start(){ more.key = null; begin(pick(), false, "") }
+/* study more: any number of extra rounds of five, across all courses or one course, all types or only exam-style or only concepts */
+var more = {key:null}, sitting = {};   // sitting: cards already shown in this visit, so another five does not bring them straight back
+function modeOk(c){ var m = S.mode||"all"; return m==="all" || (m==="exam" ? c.type==="mcq" : c.type!=="mcq") }
+function pickMore(key){
+  var pool = CARDS.filter(function(c){ return (!key || c.course_key===key) && modeOk(c) }).sort(function(a,b){ return ((sitting[a.id]?1:0)-(sitting[b.id]?1:0)) || sortP(a,b) });
+  var out = [], matches = 0;
+  function add(c){ if(c.type==="match"){ if(matches>=1) return false; matches++ } out.push(c); return true }
+  if(key){ pool.forEach(function(c){ if(out.length<5) add(c) }) }
+  else {
+    var by = {}, order = [];
+    pool.forEach(function(c){ if(!by[c.course_key]){ by[c.course_key] = []; order.push(c.course_key) } by[c.course_key].push(c) });
+    for(var g=0; out.length<5 && g<80; g++){
+      var added = false;
+      order.forEach(function(k){ while(out.length<5 && by[k].length){ var c = by[k].shift(); if(add(c)){ added = true; break } } });
+      if(!added) break;
+    }
+  }
+  var i = -1; out.forEach(function(c,ix){ if(i<0 && c.type==="true_false") i = ix });   // open with the lightest card
+  if(i>0) out.unshift(out.splice(i,1)[0]);
+  return out;
 }
+function startMore(key){
+  var list = pickMore(key);
+  if(!list.length){ var n = $("#morenote"); if(n) n.textContent = "אין כרגע שאלות מהסוג הזה"+(key?" בקורס הזה":"")+". אנחנו מוסיפים."; return }
+  more.key = key||null;
+  begin(list, true, key ? list[0].course : "תרגול נוסף");
+}
+function startFree(key){ startMore(key) }
 /* the current-card marker slides like a drop: the leading edge moves first and fast, the trailing edge follows */
 function placeCursor(segs, cur, animate){
   var n = run.cards.length, i = Math.min(run.i, n-1);
@@ -1296,6 +1343,7 @@ function finish(){
     $("#e-cipherwrap").hidden = false;
     renderCipher($("#e-cipher"), true);
   }
+  var em = $("#e-more"); if(em){ em.hidden = !pickMore(run.free ? more.key : null).length; em.textContent = (run.free && more.key) ? "עוד חמש בקורס" : "עוד חמש שאלות" }
   var weak = $("#e-weak"); weak.textContent = "";
   if(run.misses.length){
     weak.hidden = false; weak.appendChild(el("p","label","לחזרה מחר"));
@@ -1308,9 +1356,14 @@ function finish(){
 
 /* ---------- wiring ---------- */
 $("#start").addEventListener("click",start);
+$("#more-go").addEventListener("click",function(){ startMore(null) });
+$("#e-more").addEventListener("click",function(){ startMore(run && run.free ? more.key : null) });
+[].forEach.call(document.querySelectorAll("#more [data-mode]"), function(b){
+  b.addEventListener("click",function(){ S.mode = b.dataset.mode; save(); renderHome() });
+});
 $("#quit").addEventListener("click",function(){ show("#home"); renderHome() });
 $("#e-close").addEventListener("click",function(){ show("#home"); renderHome() });
-$("#reset").addEventListener("click",function(){ S = fresh(); save(); renderHome() });
+$("#reset").addEventListener("click",function(){ if(!window.confirm("למחוק את הרצף וההתקדמות במכשיר הזה? אי אפשר לשחזר.")) return; S = fresh(); save(); renderHome() });
 function sndLabel(){ $("#snd").textContent = "צליל: "+(S.sound?"פועל":"כבוי") }
 function hintLabel(){ $("#hints").textContent = "רמזים: "+(S.hints?"פועלים":"כבויים") }
 $("#snd").addEventListener("click",function(){ S.sound = !S.sound; save(); sndLabel(); if(S.sound) sound(true) });
@@ -1318,12 +1371,13 @@ $("#hints").addEventListener("click",function(){ S.hints = !S.hints; save(); hin
 window.__d5start = function(cards){ CARDS = cards; sndLabel(); hintLabel(); renderHome(); show("#home"); };
 })();
 
-/* Daily 5 gate: opens the encrypted question bundle with this person's key, then starts the practice page
-   (reminders live in notify.js). The key comes from the personal link (#k=...), a pasted link or code, or this
-   device's storage. Nothing readable is on the server: practice.bundle.json is ciphertext. */
+/* Daily 5 gate: opens the encrypted question bundle, then starts the practice page (reminders live in notify.js).
+   Keys tried in order: a personal key (#k=... or stored), then the key derived from the class link the app already
+   keeps for the Drive buttons. Nothing readable is on the server: practice.bundle.json is ciphertext. */
 (function () {
   "use strict";
   var LS = "daily5-k";
+  var DKEY = "tzofen-home-v1-drive";   /* the class Drive secret the home page keeps (same origin) */
   var $ = function (s) { return document.querySelector(s); };
   var enc = new TextEncoder();
 
@@ -1361,9 +1415,21 @@ window.__d5start = function(cards){ CARDS = cards; sndLabel(); hintLabel(); rend
       .catch(function (e) { if (e && e.message === "bundle") throw e; return null; });
   }
 
+  function driveIdFrom(t) {
+    t = String(t || "").trim(); if (!t) return null;
+    var m = /[#&?]d=([A-Za-z0-9_-]{20,80})/.exec(t) || /\/folders\/([A-Za-z0-9_-]{20,80})/.exec(t) || /[?&]id=([A-Za-z0-9_-]{20,80})/.exec(t) || /^([A-Za-z0-9_-]{20,80})$/.exec(t);
+    return m ? m[1] : null;
+  }
+  function b64u(buf) {
+    var s = ""; new Uint8Array(buf).forEach(function (b) { s += String.fromCharCode(b); });
+    return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
+  /* the class key: SHA-256("daily5-class" + Drive secret), a different key from the one that locks the folder links */
+  function classToken(id) { return crypto.subtle.digest("SHA-256", enc.encode("daily5-class" + id)).then(b64u); }
+
   function showGate(msg) {
     $("#home").hidden = true; $("#gate").hidden = false;
-    if (msg) $("#gate-err").textContent = msg;
+    $("#gate-err").textContent = msg || "";
   }
 
   function startWith(res, token) {
@@ -1372,29 +1438,62 @@ window.__d5start = function(cards){ CARDS = cards; sndLabel(); hintLabel(); rend
     window.__d5start(res.cards);
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function () {});
     if (window.D5Notify) window.D5Notify.refresh();   /* reminders and calendar: kit/daily5/notify.js */
-    /* inside the home page: tell it practice is unlocked, so the "תרגול" tab appears */
     if (window.parent !== window) { try { window.parent.postMessage({ d5: "unlocked" }, location.origin); } catch (e) {} }
   }
 
-  function tryToken(token, fromPaste) {
-    return open(token).then(function (res) {
-      if (res) { startWith(res, token); return; }
-      store(LS, "");
-      showGate(fromPaste ? "הקוד הזה לא פעיל. בדקו שהעתקתם את כולו, או פנו לאורי." : "");
-    }).catch(function () {
-      showGate("אין חיבור כרגע. נסו שוב כשיש רשת.");
-    });
+  /* first key that opens the bundle wins; resolves to true when practice started */
+  function tryTokens(tokens) {
+    var i = 0;
+    function next() {
+      if (i >= tokens.length) return Promise.resolve(false);
+      var t = tokens[i++];
+      return open(t).then(function (res) { if (res) { startWith(res, t); return true; } return next(); });
+    }
+    return next();
+  }
+  function candidates() {
+    var list = [], fromHash = tokenFrom(location.hash), personal = fromHash || store(LS);
+    if (fromHash) store("daily5-rem", "1");
+    if (personal) list.push(Promise.resolve(personal));
+    var id = store(DKEY);
+    if (id) list.push(classToken(id));
+    return Promise.all(list);
+  }
+  function boot() {
+    candidates().then(function (tokens) {
+      if (!tokens.length) { showGate(""); return; }
+      return tryTokens(tokens).then(function (ok) {
+        if (!ok) { store(LS, ""); showGate("הקישור ששמור אצלכם לא פותח את התרגול. הדביקו את הקישור העדכני מהקבוצה."); }
+      });
+    }).catch(function () { showGate("אין חיבור כרגע. נסו שוב כשיש רשת."); });
   }
 
-  /* ---- boot ---- */
-  $("#gate-go").addEventListener("click", function () {
-    var t = tokenFrom($("#gate-in").value);
-    if (!t) { showGate("זה לא נראה כמו קישור או קוד אישי."); return; }
+  /* ---- the one box: the class link from the group (or a personal code) ---- */
+  function submit() {
+    var text = $("#gate-in").value, personal = tokenFrom(text), id = driveIdFrom(text);
+    if (!personal && !id) { showGate("זה לא נראה כמו הקישור מהקבוצה. אפשר להדביק את הקישור לדף או את קישור תיקיית הדרייב."); return; }
     $("#gate-err").textContent = "";
-    tryToken(t, true);
-  });
-  var first = tokenFrom(location.hash) || store(LS);
-  if (first) tryToken(first, false); else showGate("");
+    if (personal) store("daily5-rem", "1");   /* a personal key is how Ori tests reminders on his own phone */
+    var p = personal ? Promise.resolve(personal) : (store(DKEY, id), classToken(id));
+    p.then(function (t) { return tryTokens([t]); }).then(function (ok) {
+      if (ok) {
+        if (id && window.parent !== window) { try { window.parent.postMessage({ d5: "drive", id: id }, location.origin); } catch (e) {} }
+        return;
+      }
+      if (id) store(DKEY, "");
+      showGate("הקישור הזה לא פותח את התרגול. הדביקו את הקישור שאורי שלח בקבוצה.");
+    }).catch(function () { showGate("אין חיבור כרגע. נסו שוב כשיש רשת."); });
+  }
+  $("#gate-go").addEventListener("click", submit);
+  var pasteBtn = $("#gate-paste");
+  if (pasteBtn) {
+    if (!(navigator.clipboard && navigator.clipboard.readText)) pasteBtn.hidden = true;
+    pasteBtn.addEventListener("click", function () {
+      navigator.clipboard.readText().then(function (t) { $("#gate-in").value = t || ""; submit(); })
+        .catch(function () { $("#gate-in").focus(); showGate("לא הצלחנו לקרוא מהלוח. לחיצה ארוכה בתיבה ואז הדבקה."); });
+    });
+  }
+  boot();
 })();
 
 </script>
