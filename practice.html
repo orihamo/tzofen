@@ -193,6 +193,13 @@ section.block{display:flex;flex-direction:column;gap:12px}
 @keyframes burst{from{transform:translate(0,0) rotate(0);opacity:1}75%{opacity:1}to{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:0}}
 .cel-text{font-weight:600;margin:0;text-align:center}
 @media (prefers-reduced-motion:reduce){.conf{display:none}}
+body{padding-bottom:calc(env(safe-area-inset-bottom) + 84px)}
+.d5nav{position:fixed;left:0;right:0;inset-inline:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(5,1fr);gap:2px;padding:6px 8px calc(env(safe-area-inset-bottom) + 6px);background:var(--paper);border-top:1px solid var(--line)}
+.d5nav[hidden]{display:none}
+.d5nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:52px;color:var(--ink3);text-decoration:none;font-size:.75rem;font-weight:500;border-radius:10px}
+.d5nav a[aria-current=page]{color:var(--ink);background:var(--mark-soft)}
+.d5nav a:focus-visible{outline:3px solid var(--ink);outline-offset:-3px}
+.d5nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .backlink{font-weight:500;color:var(--ink2);text-decoration:underline;text-underline-offset:3px}
 </style>
 </head>
@@ -282,6 +289,14 @@ section.block{display:flex;flex-direction:column;gap:12px}
 </main>
 
 </div>
+
+<nav class="d5nav" id="d5nav" aria-label="תפריט ראשי">
+  <a href="./?t=today"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2.5"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>היום</a>
+  <a href="./?t=week"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16.5" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>השבוע</a>
+  <a href="./?t=prep"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 9h6M9 13h6"/></svg>הכנה</a>
+  <a href="./?t=dl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>דדליינים</a>
+  <a href="practice.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg>תרגול</a>
+</nav>
 
 <script>
 /* Daily 5 notify: reminders card, settings panel, calendar buttons and the "done today" ping.
@@ -587,7 +602,7 @@ section.block{display:flex;flex-direction:column;gap:12px}
     var host = m.host, st = state(), ui = m.ui, box, focusEl = null;
     host.textContent = ""; host.classList.add("d5n"); host.setAttribute("dir", "rtl"); host.setAttribute("lang", "he");
     if (m.kind === "card") {
-      var show = ui.phase !== "closed" && (ui.phase === "done" || ui.phase === "form" || (!snoozed() && (st === "setup" || st === "install")));
+      var show = ui.phase !== "closed" && (ui.phase === "done" || ui.phase === "form" || (!snoozed() && (st === "setup" || st === "install" || st === "denied")));
       if (!show) { host.hidden = true; return; }
     }
     host.hidden = false;
@@ -598,15 +613,20 @@ section.block{display:flex;flex-direction:column;gap:12px}
       var mm = el("p", "d5n-msg ok", ui.msg ? ui.msg[0] : "סגור."); mm.setAttribute("role", "status"); box.appendChild(mm);
       box.appendChild(el("p", "d5n-p", "אפשר לשנות או לכבות בכל רגע בכפתור \"תזכורות\" בתחתית העמוד."));
       box.appendChild(btn("סגירה", "", function () { ui.phase = "closed"; ui.msg = null; refresh(); }));
+      /* once it is set up the card steps aside by itself; the "תזכורות" button at the bottom keeps the settings */
+      if (!ui.timer) ui.timer = setTimeout(function () { ui.timer = null; if (ui.phase === "done") { ui.phase = "closed"; ui.msg = null; refresh(); } }, 8000);
       return;
     }
     if (m.kind === "section") box.appendChild(el("p", "d5n-t", "תזכורת יומית"));
     if (m.kind === "section" && st === "setup") box.appendChild(el("p", "d5n-p", "הודעה קצרה בשעה שתבחרו, ורק אם עוד לא סיימתם."));
 
     if (m.kind === "card" && ui.phase !== "form") {
-      box.appendChild(el("p", "d5n-t", "רוצים תזכורות?"));
+      box.appendChild(el("p", "d5n-t", st === "denied" ? "ההתראות חסומות" : "רוצים תזכורות?"));
       if (st === "install") {
         box.appendChild(el("p", "d5n-p", "תזכורות עובדות רק מהאפליקציה שעל מסך הבית. בספארי: שיתוף, הוספה למסך הבית, ופותחים אותה משם."));
+        box.appendChild(btn("הבנתי", "", function () { snooze(m); }));
+      } else if (st === "denied") {
+        box.appendChild(el("p", "d5n-p", "ההתראות חסומות לאפליקציה הזו. כדי להפעיל: הגדרות הטלפון, התראות, היום ומחר, ולאפשר התראות. אחר כך חוזרים לכאן."));
         box.appendChild(btn("הבנתי", "", function () { snooze(m); }));
       } else {
         box.appendChild(el("p", "d5n-p", "הודעה קצרה פעם ביום, בשעה שתבחרו. אפשר לשנות או לכבות בכל רגע."));
@@ -929,6 +949,7 @@ function pick(){
 var run = null;
 function show(id){
   ["#home","#session","#done"].forEach(function(s){$(s).hidden = (s!==id)});
+  var nav = document.getElementById("d5nav"); if(nav) nav.hidden = (id!=="#home");   // full focus during a session and on the result screen
   var v = $(id); v.classList.remove("enter"); void v.offsetWidth; v.classList.add("enter");
   window.scrollTo(0,0);
 }
