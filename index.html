@@ -183,6 +183,26 @@ body::before{content:"";position:absolute;z-index:-1;left:0;right:0;inset-inline
 .tcard .rule{margin:0;padding:8px 10px;border-inline-start:3px solid var(--mark);background:var(--surface-2);font-size:.9375rem}
 .tcard .src{margin:6px 0 0;color:var(--ink-3);font-size:.8125rem}
 .prep .none{margin:6px 0 0;color:var(--ink-3);font-size:.9375rem}
+/* per course: next lesson, then typed items (type chip + source) */
+.prep>.cw+.cw{border-top:1px solid var(--line)}
+.cw-h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:2px 10px}
+.cw-name{margin:0;font-weight:600;font-size:1.0625rem;line-height:1.3}
+.cw-name .tag{margin-inline-start:8px;color:var(--mark-ink);font-weight:600;font-size:.8125rem;white-space:nowrap}
+.cw-when{color:var(--ink-3);font-size:.875rem}
+.cw-where{margin:2px 0 0;color:var(--ink-2);font-size:.875rem}
+.cw-change{margin:8px 0 0;padding:8px 10px;border-radius:var(--r-chip);background:var(--surface-2);font-size:.875rem;line-height:1.45}
+.prep .ci-list{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:12px}
+.prep .ci-list>li{display:grid;justify-items:start;gap:3px;padding:0}
+.ci-list .m{width:100%}
+.ty{display:inline-block;padding:1px 7px;border:1px solid var(--line-2);border-radius:var(--r-chip);color:var(--ink);font-size:.8125rem;font-weight:500;line-height:1.35}
+.ty.un{border-style:dashed;color:var(--ink-3)}
+.ci-tx{font-size:.9375rem;line-height:1.45;max-width:68ch}
+.ci-tx a{text-decoration:underline;text-decoration-color:var(--line-2);text-underline-offset:3px}
+.ci-due{font-size:.875rem;font-weight:600;color:var(--ink)}
+.ci-due.hot{color:var(--hot)}
+.ci-src{color:var(--ink-3);font-size:.8125rem}
+.ci-empty{margin:10px 0 0;color:var(--ink-2);font-size:.9375rem}
+.prep-age.fresh{margin:0 2px 10px;line-height:1.5}
 #v-prep{display:grid;gap:24px}
 /* ---------- shared pieces ---------- */
 .view{animation:enter .24s var(--ease)}
@@ -191,6 +211,11 @@ body::before{content:"";position:absolute;z-index:-1;left:0;right:0;inset-inline
 .sec-h h2,.sec-h h3{margin:0;font-weight:600;font-size:1.25rem;line-height:1.25}
 .sec-h p{margin:0;color:var(--ink-3);font-size:.875rem}
 .stack,.home{display:grid;gap:24px}
+/* Daily 5 entry: only after this person opened practice.html once with their personal link */
+.prac{grid-column:1/-1;display:grid;gap:2px;padding:14px 16px;border:1px solid var(--line);border-radius:var(--r-sheet);background:var(--surface);color:var(--ink);text-decoration:none;min-height:56px;align-content:center}
+.prac b{font-weight:600}
+.prac span{color:var(--ink-2);font-size:.9375rem}
+.prac:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 .quiet{margin:0;padding:2px;color:var(--ink-2)}
 .quiet.box{padding:12px 14px;border-radius:var(--r-sheet);background:var(--surface);border:1px solid var(--line);color:var(--ink)}
 .quiet .linkbtn{display:inline-flex;align-items:center;min-height:44px;margin-inline-start:6px;vertical-align:middle}
@@ -499,6 +524,8 @@ main:focus{outline:none}
     <div class="row-btns"><button type="button" class="btn" id="hint-help">עוד הסברים</button><button type="button" class="btn primary" id="hint-ok">הבנתי</button></div>
   </aside>
   <section class="view home" id="v-today" role="tabpanel" aria-labelledby="tab-today">
+    <div id="d5n" data-d5n="card" hidden></div>
+    <a class="prac" id="t-prac" href="practice.html" hidden><b>תרגול יומי</b><span>חמש שאלות, שלוש דקות. הרצף מחכה.</span></a>
     <div class="stack" id="t-main"></div>
     <div class="stack" id="t-side">
       <section id="t-strip" aria-label="השבוע"></section>
@@ -646,7 +673,7 @@ main:focus{outline:none}
   <form class="set" method="dialog">
     <div class="sheet-h"><h2 id="help-title" tabindex="-1" autofocus>איך זה עובד</h2><button type="button" class="icon-btn" data-close aria-label="סגירה"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
     <p class="help-q">מה יש בכל לשונית?</p>
-    <p class="help-a">היום: השיעורים של היום ומחר ומה הכי קרוב. השבוע: כל השבוע ביום אחד. הכנה: קריאות ונושאים לשיעורים הקרובים, ושיעורי בית להגשה. דדליינים: כל ההגשות, הבחנים והמבחנים.</p>
+    <p class="help-a">היום: השיעורים של היום ומחר ומה הכי קרוב. השבוע: כל השבוע ביום אחד. הכנה: לכל קורס, מה לעבור לפני המפגש הבא ומה להגיש ומתי. ליד כל פריט כתוב מה הוא (קריאה, מטלה בלמדה, בוחן, מבחן, רשות) ומאיפה זה בא, ואם המרצה לא סימן, כתוב "לא מסומן אצל המרצה". למטה, תיבות סימון להגשות. דדליינים: כל ההגשות, הבחנים והמבחנים.</p>
     <p class="help-q">מה הצבעים אומרים?</p>
     <p class="help-a">כתום מסמן את השיעור שמתחיל עכשיו או הכי קרוב. אדום מסמן משהו שמגיע בתוך 48 שעות. כל צבע מלווה גם במילים, כך שלא צריך לנחש.</p>
     <p class="help-q">איך מסמנים שיעורי בית כבוצעו?</p>
@@ -680,7 +707,7 @@ main:focus{outline:none}
   </form>
 </dialog>
 
-<script id="data" type="application/json">{"source": "https://mzb.biu.ac.il/node/5776", "fetched": "24.10.2026", "sessions": [{"period": "A", "date": "2026-10-13", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "A", "date": "2026-10-13", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-10-13", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-10-16", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-10-16", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-10-16", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-10-16", "time": "12:30-14:00", "title": "ניהול משא ומתן - מפגש 1"}, {"period": "A", "date": "2026-10-18", "time": "20:00-21:30", "title": "בינה מלאכותית ואוריינות אקדמית"}, {"period": "A", "date": "2026-10-20", "time": "16:00-17:30", "title": "סטטיסטיקה א' - מפגש 1"}, {"period": "A", "date": "2026-10-20", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-10-20", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-10-23", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-10-23", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-10-23", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-10-23", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-10-30", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-10-30", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-10-30", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-10-30", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-11-03", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "A", "date": "2026-11-03", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-11-03", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-11-06", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-11-06", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-11-06", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-11-06", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-11-10", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "A", "date": "2026-11-10", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-11-10", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-11-13", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-11-13", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-11-13", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-11-13", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-11-17", "time": "16:00-17:30", "title": "סטטיסטיקה א' - מפגש 2"}, {"period": "A", "date": "2026-11-17", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-11-17", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-11-20", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-11-20", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-11-20", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-11-20", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-11-24", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "A", "date": "2026-11-24", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-11-24", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-11-27", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-11-27", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-11-27", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-11-27", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-12-01", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "A", "date": "2026-12-01", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-12-01", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-12-11", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-12-11", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-12-11", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-12-11", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-12-15", "time": "16:00-17:30", "title": "סטטיסטיקה א' - מפגש 3"}, {"period": "A", "date": "2026-12-15", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-12-15", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-12-18", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-12-18", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-12-18", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-12-18", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-12-22", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "A", "date": "2026-12-22", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-12-22", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-12-25", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-12-25", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-12-25", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-12-25", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-12-27", "time": "20:00-21:30", "title": "בינה מלאכותית ואוריינות אקדמית"}, {"period": "A", "date": "2026-12-29", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "A", "date": "2026-12-29", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-12-29", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2027-01-01", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2027-01-01", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2027-01-01", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2027-01-01", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2027-01-05", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "A", "date": "2027-01-05", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2027-01-05", "time": "20:00-21:30", "title": "ניהול משא ומתן - מפגש 2"}, {"period": "A", "date": "2027-01-08", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2027-01-08", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2027-01-08", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2027-01-08", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2027-01-12", "time": "16:00-17:30", "title": "סטטיסטיקה א' - מפגש 4"}, {"period": "A", "date": "2027-01-12", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2027-01-12", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2027-01-15", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2027-01-15", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2027-01-15", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית - סיום"}, {"period": "A", "date": "2027-01-15", "time": "12:30-14:00", "title": "טרור וגרילה - סיום"}, {"period": "break", "date": "2027-01-19", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-01-19", "time": "18:00-19:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-01-22", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-01-22", "time": "09:10-10:40", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-01-22", "time": "10:50-12:20", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-01-22", "time": "12:30-14:00", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-01-26", "time": "16:00-17:30", "title": "סטטיסטיקה א' - מפגש 5"}, {"period": "break", "date": "2027-01-26", "time": "18:00-19:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-01-29", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-01-29", "time": "09:10-10:40", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-01-29", "time": "10:50-12:20", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-01-29", "time": "12:30-14:00", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-02-02", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-02-02", "time": "18:00-19:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-02-05", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-02-05", "time": "09:10-10:40", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-02-05", "time": "10:50-12:20", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-02-05", "time": "12:30-14:00", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-02-09", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-02-09", "time": "18:00-19:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-02-12", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-02-12", "time": "09:10-10:40", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-02-12", "time": "10:50-12:20", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-02-12", "time": "12:30-14:00", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-02-16", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-02-16", "time": "18:00-19:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-02-19", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-02-19", "time": "09:10-10:40", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-02-19", "time": "10:50-12:20", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-02-19", "time": "12:30-14:00", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-02-26", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-02-26", "time": "09:10-10:40", "title": "מבוא למנהל ומדיניות ציבורית - סיום"}, {"period": "break", "date": "2027-02-26", "time": "10:50-12:20", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-02-26", "time": "12:30-14:00", "title": "יסודות הניהול - סיום"}, {"period": "B", "date": "2027-03-02", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "B", "date": "2027-03-02", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-03-02", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-03-05", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-03-05", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-03-05", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-03-05", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-03-09", "time": "16:00-17:30", "title": "סטטיסטיקה ב' - מפגש 1"}, {"period": "B", "date": "2027-03-09", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-03-09", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-03-12", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-03-12", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-03-12", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-03-12", "time": "12:30-14:00", "title": "יהדות מרוקו - מפגש 1"}, {"period": "B", "date": "2027-03-16", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "B", "date": "2027-03-16", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-03-16", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-03-19", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-03-19", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-03-19", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-03-19", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-03-26", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-03-26", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-03-26", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-03-26", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-03-30", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "B", "date": "2027-03-30", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-03-30", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-04-02", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-04-02", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-04-02", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-04-02", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-04-06", "time": "16:00-17:30", "title": "סטטיסטיקה ב' - מפגש 2"}, {"period": "B", "date": "2027-04-06", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-04-06", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-04-09", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-04-09", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-04-09", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-04-09", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-04-13", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "B", "date": "2027-04-13", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-04-13", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-04-16", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-04-16", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-04-16", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-04-16", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-05-04", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "B", "date": "2027-05-04", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-05-04", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-05-07", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-05-07", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-05-07", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-05-07", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-05-14", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-05-14", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-05-14", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-05-14", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-05-18", "time": "16:00-17:30", "title": "סטטיסטיקה ב' - מפגש 3"}, {"period": "B", "date": "2027-05-18", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-05-18", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-05-21", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-05-21", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-05-21", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-05-21", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-05-25", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "B", "date": "2027-05-25", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-05-25", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-05-28", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-05-28", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-05-28", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-05-28", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-06-01", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "B", "date": "2027-06-01", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-06-01", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-06-08", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "B", "date": "2027-06-08", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-06-08", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-06-15", "time": "16:00-17:30", "title": "סטטיסטיקה ב' - מפגש 4"}, {"period": "B", "date": "2027-06-15", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-06-15", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-06-18", "time": "07:30-09:00", "title": "יהדות מרוקו - מפגש 2"}, {"period": "B", "date": "2027-06-18", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-06-18", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-06-18", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-06-22", "time": "16:00-17:30", "title": "עקרונות ההצפנה - סיום"}, {"period": "B", "date": "2027-06-22", "time": "18:00-19:30", "title": "מבוא לסייבר - סיום"}, {"period": "B", "date": "2027-06-22", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל - סיום"}, {"period": "B", "date": "2027-06-25", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-06-25", "time": "09:10-10:40", "title": "מבוא למזרח תיכון - סיום"}, {"period": "B", "date": "2027-06-25", "time": "10:50-12:20", "title": "תורת הארגונים - סיום"}, {"period": "B", "date": "2027-06-25", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל - סיום"}], "notes": {"2026-10-27": "יום בחירות לכנסת", "2026-12-04": "חנוכה", "2026-12-08": "חנוכה", "2026-12-11": "נר אחרון של חנוכה", "2027-03-23": "פורים", "2027-03-26": "מעבר לשעון קיץ", "2027-04-20": "פסח", "2027-04-23": "פסח", "2027-04-27": "פסח", "2027-04-30": "פסח", "2027-05-11": "יום הזיכרון לחללי מערכות ישראל", "2027-05-25": "ל\"ג בעומר", "2027-06-04": "יום ירושלים", "2027-06-11": "שבועות"}, "courses": {"מבוא למנהל ומדיניות ציבורית": {"key": "admin", "name": "מבוא למינהל ומדיניות ציבורית", "place": "זום", "note": "", "when": "שישי 07:30 (סמסטר א') · שישי 07:30 (חופשת סמסטר)", "lemida": "https://lemida.biu.ac.il/course/view.php?id=115896", "zoom": "https://lemida.biu.ac.il/mod/zoom/view.php?id=3288267"}, "יסודות הניהול": {"key": "mgmt", "name": "יסודות הניהול", "place": "זום", "note": "", "when": "שישי 09:10 (סמסטר א') · שישי 10:50 (חופשת סמסטר)", "lemida": "https://lemida.biu.ac.il/course/view.php?id=115939", "zoom": "https://lemida.biu.ac.il/mod/zoom/view.php?id=3232525"}, "הדרכה בבליוגרפית": {"key": "biblio", "name": "הדרכה ביבליוגרפית", "place": "זום", "note": "", "when": "שישי 10:50 (סמסטר א')", "lemida": "https://lemida.biu.ac.il/course/view.php?id=115893", "zoom": "https://lemida.biu.ac.il/mod/zoom/view.php?id=3274806"}, "ניהול משא ומתן": {"key": "nego", "name": "ניהול משא ומתן", "place": "", "note": "רק שני מפגשים בסמסטר", "when": "שישי 12:30 (סמסטר א')", "lemida": "https://lemida.biu.ac.il/course/view.php?id=115923", "zoom": "https://lemida.biu.ac.il/mod/zoom/view.php?id=3284411"}, "טרור וגרילה": {"key": "terror", "name": "טרור וגרילה", "place": "זום (הקישור בלמדה של הקורס)", "note": "", "when": "שישי 12:30 (סמסטר א')", "lemida": null, "zoom": null}, "עקרונות ההצפנה": {"key": "crypto", "name": "עקרונות ההצפנה", "place": "בר-אילן", "note": "", "when": "שלישי 16:00 (סמסטר א') · שלישי 18:00 (חופשת סמסטר) · שלישי 16:00 (סמסטר ב')", "lemida": "https://lemida.biu.ac.il/course/view.php?id=113998", "zoom": null}, "מבוא לסייבר": {"key": "cyber", "name": "מבוא לסייבר", "place": "בר-אילן, בכיתה", "note": "", "when": "שלישי 18:00 (סמסטר א') · שלישי 18:00 (סמסטר ב')", "lemida": "https://lemida.biu.ac.il/course/view.php?id=113684", "zoom": null}, "יסודות הביטחון הלאומי בישראל": {"key": "natsec", "name": "יסודות הביטחון הלאומי בישראל", "place": "בניין 905 כיתה 62", "note": "", "when": "שלישי 20:00 (סמסטר א') · שלישי 20:00 (סמסטר ב')", "lemida": "https://lemida.biu.ac.il/course/view.php?id=113795", "zoom": null}, "סטטיסטיקה א'": {"key": "stats", "name": "סטטיסטיקה א'", "place": "בר-אילן", "note": "", "when": "שלישי 16:00 (סמסטר א') · שלישי 16:00 (חופשת סמסטר)", "lemida": "https://lemida.biu.ac.il/course/view.php?id=115911", "zoom": null}, "סטטיסטיקה ב'": {"key": "statsb", "name": "סטטיסטיקה ב'", "place": "", "note": "", "when": "שלישי 16:00 (סמסטר ב')", "lemida": null, "zoom": null}, "מבוא למזרח תיכון": {"key": "mideast", "name": "מבוא למזרח תיכון", "place": "", "note": "", "when": "שישי 09:10 (סמסטר ב')", "lemida": null, "zoom": null}, "תורת הארגונים": {"key": "orgs", "name": "תורת הארגונים", "place": "", "note": "", "when": "שישי 10:50 (סמסטר ב')", "lemida": null, "zoom": null}, "סייבר כמעצב דעת קהל": {"key": "cyberop", "name": "סייבר כמעצב דעת קהל", "place": "", "note": "", "when": "שישי 12:30 (סמסטר ב')", "lemida": null, "zoom": null}, "יהדות מרוקו": {"key": "morocco", "name": "יהדות מרוקו", "place": "", "note": "שני מפגשים", "when": "שישי 12:30 (סמסטר ב')", "lemida": null, "zoom": null}, "בינה מלאכותית ואוריינות אקדמית": {"key": "ai", "name": "בינה מלאכותית ואוריינות אקדמית", "place": "זום (הקישור בלמדה)", "note": "קורס מתוקשב, שני מפגשי זום", "when": "ראשון 20:00 (סמסטר א')", "lemida": "https://lemida.biu.ac.il/course/view.php?id=117940", "zoom": null}}, "semester": {"from": "2026-10-13", "to": "2027-01-15"}, "lessons": {"admin": {"2026-10-23": {"topic": "לפי הסילבוס זה נושא 2, מודלים של מדיניות (הסילבוס בלמדה עוד של תשפ\"ה, אז שווה לבדוק)", "reading": "Dye (2005) עמ' 11-29 + נחמיאס, ארבל-גנץ ומידני (2009) עמ' 137-252, והמצגת של נושא 2 בלמדה"}, "2026-10-30": {"topic": "לפי הסילבוס ממשיכים במודלים של מדיניות, הנושא פרוס שם על כמה שיעורים (הסילבוס עוד של תשפ\"ה)", "reading": "Dye (2005) עמ' 11-29 + נחמיאס, ארבל-גנץ ומידני (2009) עמ' 137-252"}}, "mgmt": {"2026-10-23": {"topic": "לפי הסדר בסילבוס זה מיומנויות וכישורים בניהול (מבוא לניהול 2)", "reading": "פרק 1 בספר של Daft (העמודים לא מצוינים בסילבוס)"}, "2026-10-30": {"topic": "לפי הסדר בסילבוס זה אתגרי הניהול: גלובליזציה, רשתות חברתיות, כלכלה שיתופית", "reading": "פרק 3 בספר של Daft (העמודים לא מצוינים בסילבוס)"}}, "biblio": {"avichai": {"2026-10-23": {"topic": "אקדמיה והמחקר האקדמי, תהליכי המחקר המדעי והאובייקטיביות (דיון בכיתה)", "reading": "מיחידה א' המצגות 1, 3 ו-4 (בלמדה)"}, "2026-10-30": {"topic": "שיטת המחקר ומושגים במדעי המדינה, סוגי מחקרים (תרגיל אמפיריות)", "reading": "מיחידה א' המצגות 5 ו-6, ומיחידה ב' מצגת 7 (בלמדה)"}, "2026-11-06": {"topic": "מאפייני הטקסט האקדמי ומבנה עבודת המחקר (תרגיל טקסט אקדמי מול פופולרי)", "reading": "מיחידה א' מצגת 7 (בלמדה)"}}}, "cyber": {"2026-11-03": {"topic": "לפי הסדר בלמדה זה כנראה שיעור 3, \"אם כל תעשייה הופכת לתעשיית תוכנה, מה המשמעויות?\"", "note": "אין קריאת חובה מסומנת לשיעור הזה בלמדה"}}, "natsec": {"2026-11-03": {"topic": "לפי הסדר בסילבוס זה כנראה א3, המאבק המשפטי לבינאום הסכסוך (כדאי להציץ בהודעה של איתן לפני)", "reading": "Israel on the International Legal Docket (JST, פברואר 2024) + הגרסה העברית \"ישראל והאג\" באתר הקורס"}}, "crypto": {"2026-11-03": {"note": "בלמדה יש זום שבועי לשיעור שמתחיל ב-15:50 (שעתיים), אז כדאי לבדוק אם השיעור בזום או בכיתה"}}}, "deadlines": [{"date": "2026-10-25", "time": "23:59", "text": "להעלות ללמדה את מטלה 1 בבינה מלאכותית (חמש התנסויות ב-AI)", "kind": "due", "course": "ai", "link": "https://lemida.biu.ac.il/mod/assign/view.php?id=3260893"}, {"date": "2026-11-18", "time": "18:00", "text": "מבוא לסייבר: בוחן: Stuxnet והמצב 15 שנים אחרי הגילוי", "kind": "due", "course": "cyber", "link": "https://lemida.biu.ac.il/mod/quiz/view.php?id=3288960", "group": null}, {"date": "2026-11-19", "time": "18:00", "text": "מבוא לסייבר: 1. בוחן על \"מבט בינתחומי על אתגרי הביטחון בעידן המידע\"", "kind": "due", "course": "cyber", "link": "https://lemida.biu.ac.il/mod/quiz/view.php?id=3282860", "group": null}, {"date": "2026-12-15", "time": "20:00", "text": "בוחן אמצע ביסודות הביטחון הלאומי (15% מהציון), במקום השיעור", "kind": "event", "course": "natsec", "link": null, "bdate": "2027-01-12", "btime": "", "bnote": "בסוף השיעור"}, {"date": "2027-01-17", "time": "18:00", "text": "ניהול משא ומתן: בחינה בחומר סגור", "kind": "exam", "course": "nego", "link": null, "bdate": "2027-02-21", "btime": "18:00"}, {"date": "2027-02-07", "time": "18:00", "text": "סטטיסטיקה א': מבחן", "kind": "exam", "course": "stats", "link": null, "bdate": "2027-03-14", "btime": "18:00"}, {"date": "2027-02-14", "time": "18:00", "text": "מבוא לסייבר: מבחן מחצית (חלק א')", "kind": "exam", "course": "cyber", "link": null, "bdate": "2027-03-21", "btime": "18:00"}, {"date": "2027-03-07", "time": "18:00", "text": "מבוא למינהל ומדיניות ציבורית: בחינה", "kind": "exam", "course": "admin", "link": null, "bdate": "2027-04-11", "btime": "18:00"}, {"date": "2027-07-04", "time": "18:00", "text": "מבוא לסייבר: מבחן סוף שנה", "kind": "exam", "course": "cyber", "link": null, "bdate": "2027-08-22", "btime": "18:00"}, {"date": "2027-07-11", "time": "18:00", "text": "יסודות הביטחון הלאומי בישראל: מבחן סופי", "kind": "exam", "course": "natsec", "link": null, "bdate": "2027-08-29", "btime": ""}], "built": "2026-10-27", "lecturers": {"admin": {"name": "ד\"ר עדי בינס", "email": "adi.binhas@beitberl.ac.il", "hours": "בתיאום מראש", "attend": "חובה, ומצלמה פתוחה בזום"}, "mgmt": {"name": "ד\"ר דפנה ברילר", "email": "daphna.brueller@biu.ac.il"}, "biblio": {"avichai": {"name": "ד\"ר אביחי ארביטמן", "hours": "בתיאום מראש. המייל בסילבוס בלמדה", "attend": "נדרשת נוכחות של 80-85%"}}, "nego": {"name": "ד\"ר יחיאל שבי", "note": "פרטי הקשר בסילבוס בלמדה", "attend": "חובה. מעל שתי היעדרויות בלי סיבה מוצדקת: אין גישה לבחינה"}, "crypto": {"name": "מר אורן יגר", "note": "פרטי הקשר בסילבוס בלמדה"}, "stats": {"name": "ד\"ר מורן שמש-עירון", "note": "פרטי הקשר בסילבוס בלמדה"}, "cyber": {"name": "ד\"ר ליאור טבנסקי", "email": "liort@tauex.tau.ac.il"}, "natsec": {"name": "ד\"ר איתן ברק", "email": "eitan.barak@biu.ac.il", "hours": "יום ג' 21:30-22:15, אחרי השיעור", "attend": "חובה, והיא נבדקת"}, "ai": {"name": "פרופ' יניב פוקס", "hours": "אפשר לתאם שיחה במייל. שאלות שוטפות לעוזר/ת ההוראה"}}, "vault": {"iv": "N3eI+UNsOk2nMy3a", "ct": "zT1rLoV9Ay2jaY9MkYy10yxILddYACRZSivhwUKKWJ5YSdBEGge94+RIeaSlIXhdF/gSSt2DOKakP0zNQwrY07BdJsDgdNmfZe4sko2HzowKhN0Zhz4/jZpXO2SgHYYxwnr/Hh4Wv8xdxzuHCEXDSi/R87Oq1k7ZpFCpPZgEnaI2iwBkGPsZGa47nyf+zGMHt40tjlG01RPTNmyxFef+JFYdbHH6Qg9p4OkiyyoyAuuzPWhL7uxQ/YG6k8/g48O+iYEVtqCc4klfZAIJm9QSjZaeyVWOr7xzTrsqV71sucYAAIMWYl0pEfx8YJAj2qrdMgecwjA/subhpBG/bFU9IJhG9WQnMMcl2rt7zrevnRClAwayz0FNqr1GSxN0GhukYLdnieiYWRogECLbcS1d6gw2MMHMsP1/CJ+JT/UzCs/os2YBDgdyu6ZzADwAKPcWg7LLkrtomsWhNEgJtbt7mlY515axFmkkodEDWBf884a751GKBXsR2FPYS6jnYMmPDM9fwnOEOIN1op/6Wa0c3PF7samKFbKvHKDrjIrTiqt2qbsIiIn7osJS3V2zrEMTcIUEbA/G04kcXiNSvq39UcCUFmtnEfBHn7CK6csvIBqOOykiMZlBSvKD8s7WonhlBrxkYwJvj2bk4AGJCnYbKzO4kr+JtDnJsFT4IyOn7oqIqJfzTjDhnCiSiturvDG0iTLaaIdcZo9qIxGuQXC7opaOAucfZc4Mpr5xjPGPT6Vai8pCg6wG1jmBEq4XF8wLQ4oZ3xfjSLP1IKPwiwOq/5ehV9KBMMd0mzheycjUwBLiVROAA4ZP1CKfIyd7oAWv50lNa5SksJtbxl2zV3lwIJrcd7APnqp9tScGDD92KAqdcdCJXxAgrtaByKPlNtOnqfo+lEnq4zrgXCfREspBgKfXpicxc8JLHNHpZbGW2fKZXFTuWjR/qqJdlGU3PzuCChLd7D/smMx2DIZmrW06OzAaWk984uaC4wbdMEcOhWDQNBOUIo0hLaRmgK+OnZvA4vVwd6jXp7mpGi+mbx9544CEwEeCEnZXOX6KoT17TNjHijnDUZT8UKiZYu3nU3853bHijxOstiPE0dF8Y7Lwo55ervQBnLrbI11kd1/Ek+aV0AYkGndrQMbDmFxItMjeo5FRptCqWbM9p5+iyE81EevPmOURDx/9YSr9fE1WXIfbhIndOnUPCjboMn1+MC1mFm9js0KiewCFoPnHMwhTok6Uv4fRQDG5UCzje3ky3hbyNrwTWdNbWGBSV3K75xzsFeHAqV5ea0BKinGR0IFXMGjDdA4+Qj2ToLB9HU0YHQSLvbgfrqiLWsecs7Y9EsCExISyh4AV5JBsvt6jS/gQ45ICE9CN+2ERSzEivgjcVHnQDIiWQ/jXKtsRQTVyQI9/Ck3mGtRBWWlt8A46tl45X+BW0I7mMptLay6WOs6W6Ci8DQ=="}, "taskhelp": {"cards": {"ai|2026-10-25": {"what": "דוח קצר על חמש התנסויות קודמות שלכם עם כלי בינה מלאכותית. לכל אחת כותבים מה ניסיתם לעשות, מה הצליח או לא הצליח, ולמה לדעתכם.", "examples": "מהלימודים, מהעבודה או מהחיים. כולן יכולות להיות מאותו כלי, ואין צורך בחמישה כלים שונים. אין דרישת אורך: כותבים בשפה פשוטה, עם מספיק פרטים כדי שיבינו את המקרה. לא חייבים להשתמש ב-AI בזמן הכתיבה.", "steps": ["בלמדה פותחים \"קישור למטלה - לבצע כאן\" וממלאים.", "מורידים את הדוח שנוצר.", "חוזרים ללמדה, ל\"קישור למטלה - להעלות את הדו״ח לכאן\", ומעלים את הקובץ."], "rule": "ביצוע באתר החיצוני לבדו לא נחשב הגשה. צריך להעלות את הקובץ ללמדה.", "due": "25.10 בשעה 23:59. התאריך 18.10 נאמר בטעות ותוקן במפגש הזום.", "grade": "עובר או נכשל, ותוצאה אמורה להגיע בתוך כשבוע. בקורס כולו: שמונה מטלות (40%) ופרויקט סיום (60%), בלי מבחן.", "help": "תקלה, בקשת הארכה או מטלה שלא עברה: פונים למתרגל/ת. מוצאים אותו/ה ב\"מי עוזר/ת ההוראה שלי\" בלמדה, עם המייל שנרשמתם איתו.", "source": "סיכום מפגש הזום מ-15.10 (בלמדה) ודף המטלה", "checked": "2026-10-25"}}, "faq": [{"q": "למה התאריך בלמדה שונה ממה שנאמר?", "a": "הקובע הוא דף המטלה בלמדה וההודעה האחרונה של המרצה. במטלה בבינה מלאכותית, 18.10 נאמר בטעות ותוקן ל-25.10. אם עדיין לא ברור, שאלו את המתרגל/ת."}, {"q": "מה זה \"קריאה\" בפרטי השיעור?", "a": "חומר להכנה לשיעור הזה. אם המרצה כתב אחרת בלמדה, מה שכתוב בלמדה קובע."}, {"q": "האם חובה להגיע ולפתוח מצלמה?", "a": "זה תלוי בקורס. בפרטי כל שיעור יש שורה \"נוכחות\" עם מה שכתוב בסילבוס, כשיש."}, {"q": "איפה הקישור לזום?", "a": "בכפתור \"כניסה לזום\" בשיעור, שמוביל לפעילות הזום בלמדה. אם הוא לא נפתח, כתבו למרצה או לקבוצה."}, {"q": "יש הקלטות?", "a": "לא בכל קורס. בדקו בלמדה, בתוך הקורס. אם הקלטה חסרה, כתבו למרצה."}, {"q": "איך פונים למרצה?", "a": "בפרטי השיעור, בשורה \"מרצה\", כשיש מייל. בקורס בינה מלאכותית פונים קודם למתרגל/ת דרך \"מי עוזר/ת ההוראה שלי\"."}]}}</script>
+<script id="data" type="application/json">{"source": "https://mzb.biu.ac.il/node/5776", "fetched": "24.10.2026", "sessions": [{"period": "A", "date": "2026-10-13", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "A", "date": "2026-10-13", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-10-13", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-10-16", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-10-16", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-10-16", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-10-16", "time": "12:30-14:00", "title": "ניהול משא ומתן - מפגש 1"}, {"period": "A", "date": "2026-10-18", "time": "20:00-21:30", "title": "בינה מלאכותית ואוריינות אקדמית"}, {"period": "A", "date": "2026-10-20", "time": "16:00-17:30", "title": "סטטיסטיקה א' - מפגש 1"}, {"period": "A", "date": "2026-10-20", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-10-20", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-10-23", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-10-23", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-10-23", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-10-23", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-10-30", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-10-30", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-10-30", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-10-30", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-11-03", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "A", "date": "2026-11-03", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-11-03", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-11-06", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-11-06", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-11-06", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-11-06", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-11-10", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "A", "date": "2026-11-10", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-11-10", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-11-13", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-11-13", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-11-13", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-11-13", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-11-17", "time": "16:00-17:30", "title": "סטטיסטיקה א' - מפגש 2"}, {"period": "A", "date": "2026-11-17", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-11-17", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-11-20", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-11-20", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-11-20", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-11-20", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-11-24", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "A", "date": "2026-11-24", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-11-24", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-11-27", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-11-27", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-11-27", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-11-27", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-12-01", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "A", "date": "2026-12-01", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-12-01", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-12-11", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-12-11", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-12-11", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-12-11", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-12-15", "time": "16:00-17:30", "title": "סטטיסטיקה א' - מפגש 3"}, {"period": "A", "date": "2026-12-15", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-12-15", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-12-18", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-12-18", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-12-18", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-12-18", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-12-22", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "A", "date": "2026-12-22", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-12-22", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2026-12-25", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2026-12-25", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2026-12-25", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2026-12-25", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2026-12-27", "time": "20:00-21:30", "title": "בינה מלאכותית ואוריינות אקדמית"}, {"period": "A", "date": "2026-12-29", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "A", "date": "2026-12-29", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2026-12-29", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2027-01-01", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2027-01-01", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2027-01-01", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2027-01-01", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2027-01-05", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "A", "date": "2027-01-05", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2027-01-05", "time": "20:00-21:30", "title": "ניהול משא ומתן - מפגש 2"}, {"period": "A", "date": "2027-01-08", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2027-01-08", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2027-01-08", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית"}, {"period": "A", "date": "2027-01-08", "time": "12:30-14:00", "title": "טרור וגרילה"}, {"period": "A", "date": "2027-01-12", "time": "16:00-17:30", "title": "סטטיסטיקה א' - מפגש 4"}, {"period": "A", "date": "2027-01-12", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "A", "date": "2027-01-12", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "A", "date": "2027-01-15", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "A", "date": "2027-01-15", "time": "09:10-10:40", "title": "יסודות הניהול"}, {"period": "A", "date": "2027-01-15", "time": "10:50-12:20", "title": "הדרכה בבליוגרפית - סיום"}, {"period": "A", "date": "2027-01-15", "time": "12:30-14:00", "title": "טרור וגרילה - סיום"}, {"period": "break", "date": "2027-01-19", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-01-19", "time": "18:00-19:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-01-22", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-01-22", "time": "09:10-10:40", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-01-22", "time": "10:50-12:20", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-01-22", "time": "12:30-14:00", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-01-26", "time": "16:00-17:30", "title": "סטטיסטיקה א' - מפגש 5"}, {"period": "break", "date": "2027-01-26", "time": "18:00-19:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-01-29", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-01-29", "time": "09:10-10:40", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-01-29", "time": "10:50-12:20", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-01-29", "time": "12:30-14:00", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-02-02", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-02-02", "time": "18:00-19:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-02-05", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-02-05", "time": "09:10-10:40", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-02-05", "time": "10:50-12:20", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-02-05", "time": "12:30-14:00", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-02-09", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-02-09", "time": "18:00-19:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-02-12", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-02-12", "time": "09:10-10:40", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-02-12", "time": "10:50-12:20", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-02-12", "time": "12:30-14:00", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-02-16", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-02-16", "time": "18:00-19:30", "title": "עקרונות ההצפנה"}, {"period": "break", "date": "2027-02-19", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-02-19", "time": "09:10-10:40", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-02-19", "time": "10:50-12:20", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-02-19", "time": "12:30-14:00", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-02-26", "time": "07:30-09:00", "title": "מבוא למנהל ומדיניות ציבורית"}, {"period": "break", "date": "2027-02-26", "time": "09:10-10:40", "title": "מבוא למנהל ומדיניות ציבורית - סיום"}, {"period": "break", "date": "2027-02-26", "time": "10:50-12:20", "title": "יסודות הניהול"}, {"period": "break", "date": "2027-02-26", "time": "12:30-14:00", "title": "יסודות הניהול - סיום"}, {"period": "B", "date": "2027-03-02", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "B", "date": "2027-03-02", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-03-02", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-03-05", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-03-05", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-03-05", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-03-05", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-03-09", "time": "16:00-17:30", "title": "סטטיסטיקה ב' - מפגש 1"}, {"period": "B", "date": "2027-03-09", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-03-09", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-03-12", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-03-12", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-03-12", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-03-12", "time": "12:30-14:00", "title": "יהדות מרוקו - מפגש 1"}, {"period": "B", "date": "2027-03-16", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "B", "date": "2027-03-16", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-03-16", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-03-19", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-03-19", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-03-19", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-03-19", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-03-26", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-03-26", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-03-26", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-03-26", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-03-30", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "B", "date": "2027-03-30", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-03-30", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-04-02", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-04-02", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-04-02", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-04-02", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-04-06", "time": "16:00-17:30", "title": "סטטיסטיקה ב' - מפגש 2"}, {"period": "B", "date": "2027-04-06", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-04-06", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-04-09", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-04-09", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-04-09", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-04-09", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-04-13", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "B", "date": "2027-04-13", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-04-13", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-04-16", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-04-16", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-04-16", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-04-16", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-05-04", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "B", "date": "2027-05-04", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-05-04", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-05-07", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-05-07", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-05-07", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-05-07", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-05-14", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-05-14", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-05-14", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-05-14", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-05-18", "time": "16:00-17:30", "title": "סטטיסטיקה ב' - מפגש 3"}, {"period": "B", "date": "2027-05-18", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-05-18", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-05-21", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-05-21", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-05-21", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-05-21", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-05-25", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "B", "date": "2027-05-25", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-05-25", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-05-28", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-05-28", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-05-28", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-05-28", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-06-01", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "B", "date": "2027-06-01", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-06-01", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-06-08", "time": "16:00-17:30", "title": "עקרונות ההצפנה"}, {"period": "B", "date": "2027-06-08", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-06-08", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-06-15", "time": "16:00-17:30", "title": "סטטיסטיקה ב' - מפגש 4"}, {"period": "B", "date": "2027-06-15", "time": "18:00-19:30", "title": "מבוא לסייבר"}, {"period": "B", "date": "2027-06-15", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל"}, {"period": "B", "date": "2027-06-18", "time": "07:30-09:00", "title": "יהדות מרוקו - מפגש 2"}, {"period": "B", "date": "2027-06-18", "time": "09:10-10:40", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-06-18", "time": "10:50-12:20", "title": "תורת הארגונים"}, {"period": "B", "date": "2027-06-18", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל"}, {"period": "B", "date": "2027-06-22", "time": "16:00-17:30", "title": "עקרונות ההצפנה - סיום"}, {"period": "B", "date": "2027-06-22", "time": "18:00-19:30", "title": "מבוא לסייבר - סיום"}, {"period": "B", "date": "2027-06-22", "time": "20:00-21:30", "title": "יסודות הביטחון הלאומי בישראל - סיום"}, {"period": "B", "date": "2027-06-25", "time": "07:30-09:00", "title": "מבוא למזרח תיכון"}, {"period": "B", "date": "2027-06-25", "time": "09:10-10:40", "title": "מבוא למזרח תיכון - סיום"}, {"period": "B", "date": "2027-06-25", "time": "10:50-12:20", "title": "תורת הארגונים - סיום"}, {"period": "B", "date": "2027-06-25", "time": "12:30-14:00", "title": "סייבר כמעצב דעת קהל - סיום"}], "notes": {"2026-10-27": "יום בחירות לכנסת", "2026-12-04": "חנוכה", "2026-12-08": "חנוכה", "2026-12-11": "נר אחרון של חנוכה", "2027-03-23": "פורים", "2027-03-26": "מעבר לשעון קיץ", "2027-04-20": "פסח", "2027-04-23": "פסח", "2027-04-27": "פסח", "2027-04-30": "פסח", "2027-05-11": "יום הזיכרון לחללי מערכות ישראל", "2027-05-25": "ל\"ג בעומר", "2027-06-04": "יום ירושלים", "2027-06-11": "שבועות"}, "courses": {"מבוא למנהל ומדיניות ציבורית": {"key": "admin", "name": "מבוא למינהל ומדיניות ציבורית", "place": "זום", "note": "", "when": "שישי 07:30 (סמסטר א') · שישי 07:30 (חופשת סמסטר)", "lemida": "https://lemida.biu.ac.il/course/view.php?id=115896", "zoom": "https://lemida.biu.ac.il/mod/zoom/view.php?id=3288267"}, "יסודות הניהול": {"key": "mgmt", "name": "יסודות הניהול", "place": "זום", "note": "", "when": "שישי 09:10 (סמסטר א') · שישי 10:50 (חופשת סמסטר)", "lemida": "https://lemida.biu.ac.il/course/view.php?id=115939", "zoom": "https://lemida.biu.ac.il/mod/zoom/view.php?id=3232525"}, "הדרכה בבליוגרפית": {"key": "biblio", "name": "הדרכה ביבליוגרפית", "place": "זום", "note": "", "when": "שישי 10:50 (סמסטר א')", "lemida": "https://lemida.biu.ac.il/course/view.php?id=115893", "zoom": "https://lemida.biu.ac.il/mod/zoom/view.php?id=3274806"}, "ניהול משא ומתן": {"key": "nego", "name": "ניהול משא ומתן", "place": "", "note": "רק שני מפגשים בסמסטר", "when": "שישי 12:30 (סמסטר א')", "lemida": "https://lemida.biu.ac.il/course/view.php?id=115923", "zoom": "https://lemida.biu.ac.il/mod/zoom/view.php?id=3284411"}, "טרור וגרילה": {"key": "terror", "name": "טרור וגרילה", "place": "זום (הקישור בלמדה של הקורס)", "note": "", "when": "שישי 12:30 (סמסטר א')", "lemida": null, "zoom": null}, "עקרונות ההצפנה": {"key": "crypto", "name": "עקרונות ההצפנה", "place": "בר-אילן", "note": "", "when": "שלישי 16:00 (סמסטר א') · שלישי 18:00 (חופשת סמסטר) · שלישי 16:00 (סמסטר ב')", "lemida": "https://lemida.biu.ac.il/course/view.php?id=113998", "zoom": null}, "מבוא לסייבר": {"key": "cyber", "name": "מבוא לסייבר", "place": "בר-אילן, בכיתה", "note": "", "when": "שלישי 18:00 (סמסטר א') · שלישי 18:00 (סמסטר ב')", "lemida": "https://lemida.biu.ac.il/course/view.php?id=113684", "zoom": null}, "יסודות הביטחון הלאומי בישראל": {"key": "natsec", "name": "יסודות הביטחון הלאומי בישראל", "place": "בניין 905 כיתה 62", "note": "", "when": "שלישי 20:00 (סמסטר א') · שלישי 20:00 (סמסטר ב')", "lemida": "https://lemida.biu.ac.il/course/view.php?id=113795", "zoom": null}, "סטטיסטיקה א'": {"key": "stats", "name": "סטטיסטיקה א'", "place": "בר-אילן", "note": "", "when": "שלישי 16:00 (סמסטר א') · שלישי 16:00 (חופשת סמסטר)", "lemida": "https://lemida.biu.ac.il/course/view.php?id=115911", "zoom": null}, "סטטיסטיקה ב'": {"key": "statsb", "name": "סטטיסטיקה ב'", "place": "", "note": "", "when": "שלישי 16:00 (סמסטר ב')", "lemida": null, "zoom": null}, "מבוא למזרח תיכון": {"key": "mideast", "name": "מבוא למזרח תיכון", "place": "", "note": "", "when": "שישי 09:10 (סמסטר ב')", "lemida": null, "zoom": null}, "תורת הארגונים": {"key": "orgs", "name": "תורת הארגונים", "place": "", "note": "", "when": "שישי 10:50 (סמסטר ב')", "lemida": null, "zoom": null}, "סייבר כמעצב דעת קהל": {"key": "cyberop", "name": "סייבר כמעצב דעת קהל", "place": "", "note": "", "when": "שישי 12:30 (סמסטר ב')", "lemida": null, "zoom": null}, "יהדות מרוקו": {"key": "morocco", "name": "יהדות מרוקו", "place": "", "note": "שני מפגשים", "when": "שישי 12:30 (סמסטר ב')", "lemida": null, "zoom": null}, "בינה מלאכותית ואוריינות אקדמית": {"key": "ai", "name": "בינה מלאכותית ואוריינות אקדמית", "place": "זום (הקישור בלמדה)", "note": "קורס מתוקשב, שני מפגשי זום", "when": "ראשון 20:00 (סמסטר א')", "lemida": "https://lemida.biu.ac.il/course/view.php?id=117940", "zoom": null}}, "semester": {"from": "2026-10-13", "to": "2027-01-15"}, "lessons": {"admin": {"2026-10-23": {"topic": "לפי הסילבוס זה נושא 2, מודלים של מדיניות (הסילבוס בלמדה עוד של תשפ\"ה, אז שווה לבדוק)", "reading": "Dye (2005) עמ' 11-29 + נחמיאס, ארבל-גנץ ומידני (2009) עמ' 137-252, והמצגת של נושא 2 בלמדה"}, "2026-10-30": {"topic": "לפי הסילבוס ממשיכים במודלים של מדיניות, הנושא פרוס שם על כמה שיעורים (הסילבוס עוד של תשפ\"ה)", "reading": "Dye (2005) עמ' 11-29 + נחמיאס, ארבל-גנץ ומידני (2009) עמ' 137-252"}}, "mgmt": {"2026-10-23": {"topic": "לפי הסדר בסילבוס זה מיומנויות וכישורים בניהול (מבוא לניהול 2)", "reading": "פרק 1 בספר של Daft (העמודים לא מצוינים בסילבוס)"}, "2026-10-30": {"topic": "לפי הסדר בסילבוס זה אתגרי הניהול: גלובליזציה, רשתות חברתיות, כלכלה שיתופית", "reading": "פרק 3 בספר של Daft (העמודים לא מצוינים בסילבוס)"}}, "biblio": {"avichai": {"2026-10-23": {"topic": "אקדמיה והמחקר האקדמי, תהליכי המחקר המדעי והאובייקטיביות (דיון בכיתה)", "reading": "מיחידה א' המצגות 1, 3 ו-4 (בלמדה)"}, "2026-10-30": {"topic": "שיטת המחקר ומושגים במדעי המדינה, סוגי מחקרים (תרגיל אמפיריות)", "reading": "מיחידה א' המצגות 5 ו-6, ומיחידה ב' מצגת 7 (בלמדה)"}, "2026-11-06": {"topic": "מאפייני הטקסט האקדמי ומבנה עבודת המחקר (תרגיל טקסט אקדמי מול פופולרי)", "reading": "מיחידה א' מצגת 7 (בלמדה)"}}}, "cyber": {"2026-11-03": {"topic": "לפי הסדר בלמדה זה כנראה שיעור 3, \"אם כל תעשייה הופכת לתעשיית תוכנה, מה המשמעויות?\"", "note": "אין קריאת חובה מסומנת לשיעור הזה בלמדה"}}, "natsec": {"2026-11-03": {"topic": "לפי הסדר בסילבוס זה כנראה א3, המאבק המשפטי לבינאום הסכסוך (כדאי להציץ בהודעה של איתן לפני)", "reading": "Israel on the International Legal Docket (JST, פברואר 2024) + הגרסה העברית \"ישראל והאג\" באתר הקורס"}}, "crypto": {"2026-11-03": {"note": "בלמדה יש זום שבועי לשיעור שמתחיל ב-15:50 (שעתיים), אז כדאי לבדוק אם השיעור בזום או בכיתה"}}}, "deadlines": [{"date": "2026-10-25", "time": "23:59", "text": "להעלות ללמדה את מטלה 1 בבינה מלאכותית (חמש התנסויות ב-AI)", "kind": "due", "course": "ai", "link": "https://lemida.biu.ac.il/mod/assign/view.php?id=3260893"}, {"date": "2026-11-18", "time": "18:00", "text": "מבוא לסייבר: בוחן: Stuxnet והמצב 15 שנים אחרי הגילוי", "kind": "due", "course": "cyber", "link": "https://lemida.biu.ac.il/mod/quiz/view.php?id=3288960", "group": null}, {"date": "2026-11-19", "time": "18:00", "text": "מבוא לסייבר: 1. בוחן על \"מבט בינתחומי על אתגרי הביטחון בעידן המידע\"", "kind": "due", "course": "cyber", "link": "https://lemida.biu.ac.il/mod/quiz/view.php?id=3282860", "group": null}, {"date": "2026-12-15", "time": "20:00", "text": "בוחן אמצע ביסודות הביטחון הלאומי (15% מהציון), במקום השיעור", "kind": "event", "course": "natsec", "link": null, "bdate": "2027-01-12", "btime": "", "bnote": "בסוף השיעור"}, {"date": "2027-01-17", "time": "18:00", "text": "ניהול משא ומתן: בחינה בחומר סגור", "kind": "exam", "course": "nego", "link": null, "bdate": "2027-02-21", "btime": "18:00"}, {"date": "2027-02-07", "time": "18:00", "text": "סטטיסטיקה א': מבחן", "kind": "exam", "course": "stats", "link": null, "bdate": "2027-03-14", "btime": "18:00"}, {"date": "2027-02-14", "time": "18:00", "text": "מבוא לסייבר: מבחן מחצית (חלק א')", "kind": "exam", "course": "cyber", "link": null, "bdate": "2027-03-21", "btime": "18:00"}, {"date": "2027-03-07", "time": "18:00", "text": "מבוא למינהל ומדיניות ציבורית: בחינה", "kind": "exam", "course": "admin", "link": null, "bdate": "2027-04-11", "btime": "18:00"}, {"date": "2027-07-04", "time": "18:00", "text": "מבוא לסייבר: מבחן סוף שנה", "kind": "exam", "course": "cyber", "link": null, "bdate": "2027-08-22", "btime": "18:00"}, {"date": "2027-07-11", "time": "18:00", "text": "יסודות הביטחון הלאומי בישראל: מבחן סופי", "kind": "exam", "course": "natsec", "link": null, "bdate": "2027-08-29", "btime": ""}], "built": "2026-10-27", "lecturers": {"admin": {"name": "ד\"ר עדי בינס", "email": "adi.binhas@beitberl.ac.il", "hours": "בתיאום מראש", "attend": "חובה, ומצלמה פתוחה בזום"}, "mgmt": {"name": "ד\"ר דפנה ברילר", "email": "daphna.brueller@biu.ac.il"}, "biblio": {"avichai": {"name": "ד\"ר אביחי ארביטמן", "hours": "בתיאום מראש. המייל בסילבוס בלמדה", "attend": "נדרשת נוכחות של 80-85%"}}, "nego": {"name": "ד\"ר יחיאל שבי", "note": "פרטי הקשר בסילבוס בלמדה", "attend": "חובה. מעל שתי היעדרויות בלי סיבה מוצדקת: אין גישה לבחינה"}, "crypto": {"name": "מר אורן יגר", "note": "פרטי הקשר בסילבוס בלמדה"}, "stats": {"name": "ד\"ר מורן שמש-עירון", "note": "פרטי הקשר בסילבוס בלמדה"}, "cyber": {"name": "ד\"ר ליאור טבנסקי", "email": "liort@tauex.tau.ac.il"}, "natsec": {"name": "ד\"ר איתן ברק", "email": "eitan.barak@biu.ac.il", "hours": "יום ג' 21:30-22:15, אחרי השיעור", "attend": "חובה, והיא נבדקת"}, "ai": {"name": "פרופ' יניב פוקס", "hours": "אפשר לתאם שיחה במייל. שאלות שוטפות לעוזר/ת ההוראה"}}, "vault": {"iv": "ZFG0IjJQp2v4XLzs", "ct": "vYfwtxnX3bdEixSNXQ1VkL+f1xbCCY0jYzF/N4gjoHbkz4RUp37td6i9EN5jVtzyHQhZqRghL5MZ3BH53+zfn0KQjXfz5g+hT2xZjAD09zaXpJrjWZKrg6nBKAqrYNOZuhzo8aRWUW/eUuTxCBQltbsunvkL3C+1PTCS83CFPNN+yR7ejV5XOGQpR9e8GK0UUdHXfyx2eHt7SYoaVFlii81bIID/erFt13mi6/2vwAxBUIhFCXgFR8jER7+4e9qKxTPyw3AHmwX/3X8epPJn31AjgX4i0b2sGs1/kGwOgGPUe8L+H8luLfHPXWKmJ+2SPmgUH3wOvejorA8rpKkACurSdXVDh1CdpE6QUZ8dxC2Xn5sphX4a6QYy7/Zet3/sQo79cOOoyC5DjDq0jlSIhRJ/GlKxMHJKYxaIllJ6+iz/I5ZCB7tDfhkr7Et3fi2cAoAYh0hU9iKkOG7YpJ2+a3kmxAyJ66I92F7y894g4O4CmCyLHPf6HPhQ1vqqgmFpXASuJoQxaKsnoi7EmfvIfia8lesjLd4mrchD87IPHFVWyndoJ5CbKhYcrs3zOw9nv8I0DmLs6ddlWKwg8uOMMowUkOMjxZYbkPiwvVX7I2iXJMsSq1RUkdKbcxVSbvAV8dL7Qqwx1KRTd6WQX5Dz88015vSnEfY3uiGKoq/DZQm9vOIUHxYg3XKsU7alMSXOgYGgNt6B6vARryfNAu5TNaw7jfGiYrjDl6/n/3Bahc45Ntk/6H3jHX5ClZzs8/ljtZaDy2oZw93lh2fYtdcnZzz/JRv1OsJJ9La4OIqdFK/fjImaxbVk9GTaDNWXjYhs6gKWlEovYP78Ae/+2Yt00pTO5YGkBJXMlL/tZTd2d8DS5Our/cnJwqYxwXIOqdyGpQohU6obw59YfSV4NNoSFUY7rNkkoD2L6uYvQO9dfmtp7Rc2VzYne9ll8FK7JnvKq/TZ0jeC32HpKFGdr3OldBCsteW8rm12aBppbDI0KM3w20yEeFZI+iLKY1isFRjf5BfJFCID5ayF9DBbpd+7l9S87vskN0rBQwGaD8i5pt4jvj/Mfjl4HAiJR5T+Y9PLlyjrjx3yh0IxyolxhqUzGPwtgB9pJoqjjggucekugzehu/8KGSBEV717kVfaNVBJ8HD7gHT9GsbuSRm6hHDo99Mq48qusvmztvqF2nL/N9IjxttoGO33LEC3PMqhJahSWOVAes+nGWHO8RW7o9rnkBQrDTTLXd2wVEo+bYAA4HskYQXzVBTsK+aYQRNtPY7GdK1sJcWk5l53HUgTx0rFLcgB6WTfOBop/IQVdudVi7Wse3hN+cpyN76faWDPv31kVH9dgHuqfzGReB9QiiYISBSUxGh3/5+Vjds/ZleP64l52d47MzfpUvWeTfRvuIBXaYj2DxqJCaXRPmpkG+PX2N/rwcnY7uZQkRu4pR5cK6xLYw=="}, "taskhelp": {"cards": {"ai|2026-10-25": {"what": "דוח קצר על חמש התנסויות קודמות שלכם עם כלי בינה מלאכותית. לכל אחת כותבים מה ניסיתם לעשות, מה הצליח או לא הצליח, ולמה לדעתכם.", "examples": "מהלימודים, מהעבודה או מהחיים. כולן יכולות להיות מאותו כלי, ואין צורך בחמישה כלים שונים. אין דרישת אורך: כותבים בשפה פשוטה, עם מספיק פרטים כדי שיבינו את המקרה. לא חייבים להשתמש ב-AI בזמן הכתיבה.", "steps": ["בלמדה פותחים \"קישור למטלה - לבצע כאן\" וממלאים.", "מורידים את הדוח שנוצר.", "חוזרים ללמדה, ל\"קישור למטלה - להעלות את הדו״ח לכאן\", ומעלים את הקובץ."], "rule": "ביצוע באתר החיצוני לבדו לא נחשב הגשה. צריך להעלות את הקובץ ללמדה.", "due": "25.10 בשעה 23:59. התאריך 18.10 נאמר בטעות ותוקן במפגש הזום.", "grade": "עובר או נכשל, ותוצאה אמורה להגיע בתוך כשבוע. בקורס כולו: שמונה מטלות (40%) ופרויקט סיום (60%), בלי מבחן.", "help": "תקלה, בקשת הארכה או מטלה שלא עברה: פונים למתרגל/ת. מוצאים אותו/ה ב\"מי עוזר/ת ההוראה שלי\" בלמדה, עם המייל שנרשמתם איתו.", "source": "סיכום מפגש הזום מ-15.10 (בלמדה) ודף המטלה", "checked": "2026-10-25"}}, "faq": [{"q": "למה התאריך בלמדה שונה ממה שנאמר?", "a": "הקובע הוא דף המטלה בלמדה וההודעה האחרונה של המרצה. במטלה בבינה מלאכותית, 18.10 נאמר בטעות ותוקן ל-25.10. אם עדיין לא ברור, שאלו את המתרגל/ת."}, {"q": "מה זה \"קריאה\" בפרטי השיעור?", "a": "חומר להכנה לשיעור הזה. אם המרצה כתב אחרת בלמדה, מה שכתוב בלמדה קובע."}, {"q": "האם חובה להגיע ולפתוח מצלמה?", "a": "זה תלוי בקורס. בפרטי כל שיעור יש שורה \"נוכחות\" עם מה שכתוב בסילבוס, כשיש."}, {"q": "איפה הקישור לזום?", "a": "בכפתור \"כניסה לזום\" בשיעור, שמוביל לפעילות הזום בלמדה. אם הוא לא נפתח, כתבו למרצה או לקבוצה."}, {"q": "יש הקלטות?", "a": "לא בכל קורס. בדקו בלמדה, בתוך הקורס. אם הקלטה חסרה, כתבו למרצה."}, {"q": "איך פונים למרצה?", "a": "בפרטי השיעור, בשורה \"מרצה\", כשיש מייל. בקורס בינה מלאכותית פונים קודם למתרגל/ת דרך \"מי עוזר/ת ההוראה שלי\"."}]}, "checked": {"readings": "2026-10-19", "lemida": "2026-10-27T10:00"}}</script>
 <script>
 "use strict";
 const DATA = JSON.parse(document.getElementById("data").textContent);
@@ -1180,24 +1207,30 @@ function hwItem(x,done){
     .replace(/<\/li>$/,`<button type="button" class="hw-check" role="checkbox" aria-checked="${on}" aria-label="סימון כבוצע: ${esc(x.text)}" data-hw="${esc(hwId(x))}"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></i></button></li>`);
 }
 /* course page and the lesson's (or course's) Drive folder, without the Zoom and navigation buttons */
-function prepLinks(s){
-  const out=[];
-  if (s.lemida) out.push(`<a class="btn" href="${esc(s.lemida)}" target="_blank" rel="noopener">דף הקורס</a>`);
+function prepLinks(s,nm){
+  const out=[], al=l=>nm?` aria-label="${esc(l+": "+nm)}"`:"";
+  if (s.lemida) out.push(`<a class="btn" href="${esc(s.lemida)}" target="_blank" rel="noopener"${al("דף הקורס")}>דף הקורס</a>`);
   const lauren = s.course.key==="biblio" && S && S.biblio==="lauren";
   const lessonDir = !lauren && s.n && (LESSONS[s.course.key]||{})[s.n];
   const folder = lessonDir || (!lauren && FOLDERS[s.course.key]);
-  if (folder) out.push(`<a class="btn" href="https://drive.google.com/drive/folders/${esc(folder)}" target="_blank" rel="noopener">${lessonDir?"חומרים לשיעור":"חומרים בדרייב"}</a>`);
+  if (folder) out.push(`<a class="btn" href="https://drive.google.com/drive/folders/${esc(folder)}" target="_blank" rel="noopener"${al(lessonDir?"חומרים לשיעור":"חומרים בדרייב")}>${lessonDir?"חומרים לשיעור":"חומרים בדרייב"}</a>`);
   return out.length?`<div class="acts">${out.join("")}</div>`:"";
 }
 const SEENKEY="tzofen-home-v1-seen";
 let PREP_NEW=new Set();
+/* the next class of each course, up to 28 days ahead: the ones the per-course view shows (and marks "חדש") */
 function prepSessions(now,list){
-  const t=Date.now(), horizon=addDays(now.date,14);
-  return list.filter(s=>!s.mine && endAt(s)>t && s.date<=horizon).slice(0,6);
+  const t=Date.now(), horizon=addDays(now.date,28), seen=new Set(), out=[];
+  for (const s of list){
+    if (s.mine || endAt(s)<=t || seen.has(s.course.key)) continue;
+    seen.add(s.course.key);
+    if (s.date<=horizon) out.push(s);
+  }
+  return out;
 }
 function prepSig(s){
-  const l=s.lesson||{}, txt=[l.topic,l.reading,l.note].map(x=>x||"").join("|");
-  if (!(l.topic||l.reading||l.note)) return "";
+  const l=s.lesson||{}, txt=[l.topic,l.reading,l.note].map(x=>x||"").join("|")+(l.optional?"|"+l.optional:"");
+  if (!(l.topic||l.reading||l.optional||l.note)) return "";
   let h=5381; for (let i=0;i<txt.length;i++) h=((h*33)^txt.charCodeAt(i))>>>0;
   return h.toString(36);
 }
@@ -1209,37 +1242,111 @@ function prepSeen(){
   const cur={}; for (const s of prepSessions(nowIL(),sessionsFor(S))) cur[s.course.key+"|"+s.date]=prepSig(s);
   let old=null;
   try{ old=JSON.parse(localStorage.getItem(SEENKEY)) }catch(e){}
-  if (old && typeof old==="object") for (const k in cur) if (cur[k] && old[k]!==cur[k]) PREP_NEW.add(k);
+  if (old && typeof old==="object") for (const k in cur) if (cur[k] && (k in old) && old[k]!==cur[k]) PREP_NEW.add(k);   // a class that only just entered the view is not "changed"
   try{ localStorage.setItem(SEENKEY,JSON.stringify(cur)) }catch(e){}
+}
+/*WEEKPLAN*/
+/* Per course: the next class with what the data says about it, plus the open dates, each with a type and a source.
+   Pure on purpose (times come in as ms): tests/test_week_view.py runs this block under node. It never decides that
+   something is required or optional by itself: "רשות" only when the schedule file has an explicit optional field, and
+   a reading the data does not mention is shown as "לא מסומן אצל המרצה". */
+const WP_SRC={syl:"הסילבוס והלמדה", lec:"סימון המרצה", lemida:"למדה", sched:'לו"ז הקורס של הכיתה', board:"לוח המבחנים של הכיתה"};
+function wpType(x){
+  const text=x.text||"", test=/בוחן|מבחן|בחינה/.test(text), lemida=/lemida\.biu\.ac\.il/.test(x.link||"");
+  if (x.kind==="exam") return {label:"מבחן", src:WP_SRC.board, test:true};
+  if (x.kind==="event" && test) return {label:/מבחן|בחינה/.test(text)?"מבחן":"בוחן", src:WP_SRC.sched, test:true};
+  if (x.kind==="due" && lemida) return /בוחן/.test(text) ? {label:"בוחן בלמדה", src:WP_SRC.lemida, test:true} : {label:"מטלה (למדה)", src:WP_SRC.lemida};
+  if (x.kind==="due") return {label:"מטלה", src:WP_SRC.sched};
+  return {label:"מועד", src:WP_SRC.sched};
+}
+/* sess: [{key,name,date,startMs,endMs,mine,lesson}] in time order. dls: [{course,text,kind,link,dueMs,...}]. names: {key:name} */
+function weekPlan(sess, dls, t, names, o){
+  o=Object.assign({sessMs:28*864e5, dlMs:14*864e5}, o||{});
+  const next=new Map();
+  for (const s of sess){ if (!s.mine && s.endMs>t && !next.has(s.key)) next.set(s.key,s) }
+  const open=dls.filter(x=>x.course && x.dueMs>t-6*36e5);          // an item with no course key stays in the Deadlines tab
+  const keys=[...new Set([...next.keys(), ...open.map(x=>x.course)])];
+  const rows=[], later=[];
+  for (const key of keys){
+    const s=next.get(key)||null, mine=open.filter(x=>x.course===key).sort((a,b)=>a.dueMs-b.dueMs);
+    const near=mine.filter(x=>x.dueMs<=t+o.dlMs);
+    if (!near.length && !(s && s.startMs<=t+o.sessMs)){ if (s) later.push({key, name:s.name, date:s.date}); continue }
+    let pick=near.slice();
+    if (!pick.length && mine.length) pick=[mine[0]];               // nothing soon: show the nearest one, whatever its date
+    const farTest=mine.find(x=>!pick.includes(x) && wpType(x).test);  // and where the next test is
+    if (farTest) pick.push(farTest);
+    const L=(s && s.lesson) || {}, info=!!(L.topic||L.reading||L.optional||L.note), lines=[];
+    if (L.topic) lines.push({k:"topic", label:"נושא", text:L.topic});
+    if (L.reading) lines.push({k:"reading", label:"קריאה לפני השיעור", text:L.reading, src:WP_SRC.syl});
+    if (L.optional) lines.push({k:"optional", label:"רשות", text:L.optional, src:WP_SRC.lec});
+    if (info && !L.reading && !L.optional) lines.push({k:"unmarked", label:"קריאה לפני השיעור", text:"לא מסומן אצל המרצה"});
+    if (L.note) lines.push({k:"note", label:"הערה", text:L.note});
+    rows.push({key, name:(names&&names[key])||(s&&s.name)||key, next:s, info, lines,
+      tasks:pick.map(x=>Object.assign({type:wpType(x)}, x))});
+  }
+  const when=r=>[r.next?r.next.startMs:Infinity, r.tasks.length?r.tasks[0].dueMs:Infinity];
+  rows.sort((a,b)=>{ const x=when(a), y=when(b); return x[0]<y[0]?-1:x[0]>y[0]?1:x[1]<y[1]?-1:x[1]>y[1]?1:0 });
+  return {rows, later};
+}
+/*END WEEKPLAN*/
+/* "היום ב-08:00" / "ב-19.10 (לפני 8 ימים)"; null when the date is not known */
+function stampText(iso,now){
+  if (!iso) return null;
+  const d=iso.slice(0,10), tm=iso.length>10?iso.slice(11,16):"";
+  if (d===now.date) return `היום${tm?` ב-<span class="num">${tm}</span>`:""}`;
+  const n=daysFrom(d,now.date);
+  return `ב-<span class="num">${dm(d)}</span>${tm?` <span class="num">${tm}</span>`:""}${n>=2?` (לפני ${nDays(n)})`:""}`;
+}
+function wpTask(x,now,done){
+  const left=x.dueMs-Date.now(), isDone=x.kind==="due" && done.has(hwId(x)), hot=left>0 && left<=48*3600e3 && !isDone;
+  const title=x.link?`<a href="${esc(x.link)}" target="_blank" rel="noopener">${bidi(x.text)}</a>`:bidi(x.text);
+  return `<li><span class="ty">${esc(x.type.label)}</span><span class="ci-tx">${title}</span>`+
+    `<span class="ci-due${hot?" hot":""}">${x.kind==="due"?"להגשה עד":"מועד:"} ${DAYS[wday(x.date)]} <span class="num">${dm(x.date)}</span>${x.time?` · <span class="num">${x.time}</span>`:""} · ${isDone?"סומן כבוצע":countText("dl",left)}</span>`+
+    `<small class="ci-src">מקור: ${esc(x.type.src)}</small></li>`;
+}
+function wpRow(r,now,done,isNew,day){
+  const s=r.next, cs=Object.values(DATA.courses).find(c=>c.key===r.key)||{};
+  const where=s?(s.where?`מקום: ${esc(s.where)}`:"זום או כיתה: לא מסומן אצל המרצה"):"";
+  const items=r.lines.map(l=>l.k==="topic"||l.k==="note"
+      ? `<li><p class="m"><b>${l.label}</b><span>${bidi(l.text)}</span></p></li>`
+      : `<li><span class="ty${l.k==="unmarked"?" un":""}">${l.label}</span><span class="ci-tx">${bidi(l.text)}</span>${l.src?`<small class="ci-src">מקור: ${esc(l.src)}</small>`:""}</li>`)
+    .concat(r.tasks.map(x=>wpTask(x,now,done)));
+  return `<li class="cw" data-course="${esc(r.key)}"><div class="cw-h"><h3 class="cw-name">${bidi(r.name)}${isNew?` <span class="tag">חדש</span>`:""}</h3>`+
+    (s?`<small class="cw-when">המפגש הבא: ${day(s.date)} · <span class="num">${s.start}</span></small>`:`<small class="cw-when">אין מפגשים נוספים בלו"ז</small>`)+`</div>`+
+    (where?`<p class="cw-where">${where}</p>`:"")+
+    (s&&s.change?`<p class="cw-change">שינוי בלו"ז הרשמי ביום הזה: ${esc(s.change)}. <a href="${esc(DATA.source)}" target="_blank" rel="noopener">ללו"ז הרשמי</a></p>`:"")+
+    (s&&!r.info?`<p class="ci-empty">אין עדיין מידע למפגש הבא (${day(s.date)})</p>`:"")+
+    (items.length?`<ul class="ci-list">${items.join("")}</ul>`:"")+
+    prepLinks(s&&s.ref?s.ref:{lemida:cs.lemida, course:{key:r.key}, n:0}, r.name)+`</li>`;
 }
 let PREP_FILTER="";
 function renderPrep(now,list,dls){
   const v=document.getElementById("v-prep");
   if (!S){ v.innerHTML=emptyState(); return }
   const t=Date.now();
-  const ahead=prepSessions(now,list);
   const day=iso=>iso===now.date?"היום":iso===addDays(now.date,1)?"מחר":`${DAYS[wday(iso)]} ${dm(iso)}`;
-  const courses=[]; for (const s of ahead){ if (!courses.some(c=>c.key===s.course.key)) courses.push({key:s.course.key,name:s.course.name||s.title}) }
+  const sess=list.map(s=>({key:s.course.key, name:s.course.name||s.title, date:s.date, start:s.start, startMs:startAt(s), endMs:endAt(s),
+    mine:!!s.mine, where:(s.course&&s.course.place)||"", lesson:s.lesson||{}, change:CHANGES[s.date]||"", ref:s}));
+  const names=Object.fromEntries(Object.values(DATA.courses).map(c=>[c.key,c.name]));
+  const plan=weekPlan(sess, dls.map(x=>Object.assign({dueMs:dueAt(x).getTime()},x)), t, names);
+  const courses=plan.rows.map(r=>({key:r.key,name:r.name}));
   if (PREP_FILTER && !courses.some(c=>c.key===PREP_FILTER)) PREP_FILTER="";
-  const shown=PREP_FILTER?ahead.filter(s=>s.course.key===PREP_FILTER):ahead;
+  const shown=PREP_FILTER?plan.rows.filter(r=>r.key===PREP_FILTER):plan.rows;
+  const laterShown=PREP_FILTER?[]:plan.later;
   const chips=courses.length>1?`<div class="pf"><label for="pf-sel">קורס</label><select id="pf-sel"><option value="">כל הקורסים</option>`+courses.map(c=>`<option value="${esc(c.key)}"${PREP_FILTER===c.key?" selected":""}>${esc(c.name)}</option>`).join("")+`</select></div>`:"";
-  const withData=shown.filter(s=>prepSig(s)), without=shown.filter(s=>!prepSig(s));
-  const names=[...new Set(without.map(s=>s.course.name||s.title))];
-  const before=(withData.length?`<ul class="dls prep">${withData.map(s=>{
-    const isNew=PREP_NEW.has(s.course.key+"|"+s.date);
-    return `<li><div class="prep-h"><b>${bidi(s.course.name||s.title)}${isNew?` <span class="tag">חדש</span>`:""}</b><small>${day(s.date)} · <span class="num">${s.start}</span></small></div>`+
-      lessonHtml(s.lesson)+prepLinks(s)+`</li>`}).join("")}</ul>`:"")+
-    (names.length?`<p class="prep-note">בשיעורים הבאים עוד אין קריאה מעודכנת: ${names.map(bidi).join(", ")}</p>`:"")+
-    (ahead.length?"":`<p class="clear">אין שיעורים בשבועיים הקרובים.</p>`);
   const done=hwDone();
+  const ck=DATA.checked||{};
+  const stale=ck.readings && daysFrom(ck.readings,now.date)>=7;
+  const sl=stampText(ck.lemida,now), sr=stampText(ck.readings,now);
+  const checkedLine=`<p class="prep-age fresh">נבדק לאחרונה: ${sl?`מטלות בלמדה ${sl}.`:"לא ידוע מתי נבדקו המטלות בלמדה."} ${sr?`קריאות ונושאים, מול הסילבוס והלמדה, ${sr}${stale?", ייתכן שנוסף משהו מאז":""}.`:"לא ידוע מתי נבדקו הקריאות והנושאים."} הדף נבנה ב-<span class="num">${dm(DATA.built||now.date)}</span>. מה שלא מופיע כאן עדיין לא נוסף ללו"ז.</p>`;
+  const before=checkedLine+(shown.length?`<ul class="dls prep">${shown.map(r=>wpRow(r,now,done,PREP_NEW.has(r.key+"|"+(r.next&&r.next.date)),day)).join("")}</ul>`:`<p class="clear">אין שיעורים או מועדים קרובים${PREP_FILTER?" בקורס הזה":""}.</p>`)+
+    (laterShown.length?`<p class="prep-note">בלי מפגש בחודש הקרוב: ${laterShown.map(x=>`${bidi(x.name)} (<span class="num">${dm(x.date)}</span>)`).join(", ")}</p>`:"");
   const hw=dls.filter(x=>x.kind==="due" && !isTest(x) && !/בוחן|מבחן|בחינה/.test(x.text) && dueAt(x).getTime()>t && (!PREP_FILTER || x.course===PREP_FILTER))
     .sort((a,b)=>(done.has(hwId(a))-done.has(hwId(b))) || (dueAt(a)-dueAt(b)));   // finished items sink to the bottom
   const openHw=hw.filter(x=>!done.has(hwId(x))).length;
-  const age=daysFrom(DATA.built||now.date, now.date);
-  const ageLine=`<p class="prep-age">הנתונים עודכנו ${age<=0?"היום":age===1?"אתמול":"לפני "+nDays(age)} (${dm(DATA.built||now.date)}). קריאה שלא מופיעה כאן עדיין לא נוספה ללו"ז.</p>`;
-  v.innerHTML=chips+`<section><header class="sec-h"><h2>לפני השיעור</h2><p>מה לעבור לפני שנכנסים</p></header>${before}</section>`+
+  v.innerHTML=chips+`<section><header class="sec-h"><h2>קורס אחרי קורס</h2><p>קריאה, הגשות, ומה שרשות</p></header>${before}</section>`+
     `<section><header class="sec-h"><h2>שיעורי בית</h2><p>${hw.length?(openHw?openLabel(openHw):"הכול בוצע"):""}</p></header>`+
-    (hw.length?`<ul class="dls">${hw.map(x=>hwItem(x,done)).join("")}</ul>`:`<p class="clear">אין שיעורי בית פתוחים.</p>`)+`</section>`+ageLine;
+    (hw.length?`<ul class="dls">${hw.map(x=>hwItem(x,done)).join("")}</ul>`:`<p class="clear">אין שיעורי בית פתוחים.</p>`)+`</section>`;
 }
 
 let lastKey="";
@@ -1717,10 +1824,414 @@ setInterval(tick,1000);
 document.addEventListener("visibilitychange",()=>{ if (!document.hidden){ render(true); parkOnView() } });
 document.addEventListener("toggle",e=>{ if (e.target.matches && e.target.matches("details.park-mini") && e.target.open) parkOnView() },true);
 parkOnView();
+try{ if (localStorage.getItem("daily5-k")) document.getElementById("t-prac").hidden = false }catch(e){}
 /* offline copy: a small service worker, only on the real site or a local test server */
 if ("serviceWorker" in navigator && (location.protocol==="https:" || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)))
   navigator.serviceWorker.register("sw.js").catch(()=>{});  // back from the background: fresh day
 if (!S) openSetup();
+</script>
+<script>
+/* Daily 5 notify: reminders card, settings panel, calendar buttons and the "done today" ping.
+   Used by the home page (kit/template.html) and the practice page. Vanilla JS, no libraries.
+   The three placeholders below (form address, form field ids, VAPID public key) are public values filled in by
+   kit/daily5/notify_js.py.
+   Elements: any [data-d5n="card"|"section"] element is mounted on load. "card" is the dismissible question on the
+   home page (it also adds a footer button that opens the same panel as a dialog). "section" is the always-visible
+   settings block on the practice page.
+   Row id sent to the Form: <slot>.<device> for people who unlocked practice, g.<device> for everyone else.
+   Subscription row: id, sub = PushSubscription JSON + prefs {"t":[types],"h":hour}, hour. An empty "t" means off.
+   Done row: id, sub "" and hour "done:YYYY-MM-DD" (local date). */
+(function () {
+  "use strict";
+  var G = typeof window !== "undefined" ? window : {};
+  if (G.D5Notify) return;
+
+  var FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdx6YR36K56lZRU0dQ-28bUFb7XwZ_qok4PD-xdkXvPrfnY_A/formResponse";
+  var FORM_FIELDS = {"id": "entry.1596408415", "sub": "entry.691292505", "hour": "entry.1565611198"};
+  var VAPID_PUBLIC = "BJYIG31aSFaCLjsKoyf--dY0Ge0OQTeRcqwmn7S6y4Khx8ubKuNDjyKuid3OCKSrhyv7LpS3sUIESQhkZMY0hYw";
+  var K = { key: "daily5-k", dev: "daily5-dev", hour: "daily5-hour", snooze: "d5n-snooze", prefs: "d5n-prefs", done: "d5n-done" };
+  var SNOOZE_MS = 7 * 864e5;
+  var TYPES = [["practice", "תרגול יומי (אם עוד לא סיימתם)"], ["deadline", "מטלות ומועדי הגשה"], ["class", "שיעורים למחרת"]];
+  var TZ = "Asia/Jerusalem";
+  var TITLE = "תרגול יומי - 5 דקות";
+
+  /* ---------- small helpers ---------- */
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function ymd(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+  function hh(h) { return pad(h) + ":00"; }
+  function hex(buf) { return Array.prototype.map.call(new Uint8Array(buf), function (b) { return pad2(b); }).join(""); }
+  function pad2(b) { return (b < 16 ? "0" : "") + b.toString(16); }
+  function ub64(s) {
+    s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "=";
+    var r = atob(s), o = new Uint8Array(r.length); for (var i = 0; i < r.length; i++) o[i] = r.charCodeAt(i); return o;
+  }
+  function formReady() { return FORM_URL.indexOf("https://") === 0 && FORM_FIELDS && FORM_FIELDS.id; }
+  function unlocked() { return /^[A-Za-z0-9_-]{43}$/.test(store(K.key) || ""); }
+  function deviceId() {
+    var d = store(K.dev);
+    if (!d) { d = hex(crypto.getRandomValues(new Uint8Array(4))); store(K.dev, d); }
+    return d;
+  }
+  function rowId() {
+    var dev = deviceId(), tok = store(K.key) || "";
+    if (!/^[A-Za-z0-9_-]{43}$/.test(tok)) return Promise.resolve("g." + dev);
+    var pre = new TextEncoder().encode("daily5-slot"), key = ub64(tok), all = new Uint8Array(pre.length + key.length);
+    all.set(pre); all.set(key, pre.length);
+    return crypto.subtle.digest("SHA-256", all).then(function (d) { return hex(d).slice(0, 16) + "." + dev; })
+      .catch(function () { return "g." + dev; });
+  }
+  function post(id, sub, hour) {
+    var b = new URLSearchParams();
+    b.set(FORM_FIELDS.id, id); b.set(FORM_FIELDS.sub, sub); b.set(FORM_FIELDS.hour, hour);
+    /* a Google Form answers a cross-site post with an opaque reply, so success cannot be read back here */
+    return fetch(FORM_URL, { method: "POST", mode: "no-cors", body: b });
+  }
+  function readPrefs() {
+    try {
+      var p = JSON.parse(store(K.prefs) || "null");
+      if (p && Array.isArray(p.t) && p.h >= 7 && p.h <= 22) return p;
+    } catch (e) {}
+    return null;
+  }
+  function savedHour() { var p = readPrefs(), h = +(p ? p.h : store(K.hour)); return h >= 7 && h <= 22 ? h : 20; }
+
+  /* ---------- calendar: Google link and .ics ---------- */
+  function practiceUrl() {
+    var base = (typeof location !== "undefined" ? location.href : "https://example.invalid/tzofen/").split("#")[0].split("?")[0];
+    return base.replace(/[^\/]*$/, "") + "practice.html";   /* never carries the personal key */
+  }
+  /* first occurrence: today when the hour is still ahead, else tomorrow (device clock, assumed to be Israel time) */
+  function firstDay(hour, now) {
+    var d = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    if (now.getHours() >= hour) d.setDate(d.getDate() + 1);
+    return d;
+  }
+  function stamp(d, h, m) { return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + "T" + pad(h) + pad(m) + "00"; }
+  function googleUrl(hour, now) {
+    var d = firstDay(hour, now || new Date());
+    /* dates without Z plus ctz = wall-clock time in that zone; recur is read by Google's editor (no official doc; checked 27.10.2026) */
+    return "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent(TITLE) +
+      "&dates=" + stamp(d, hour, 0) + "/" + stamp(d, hour, 5) + "&ctz=" + TZ +
+      "&details=" + encodeURIComponent("חמישה כרטיסים, שלוש דקות.\n" + practiceUrl()) + "&recur=RRULE:FREQ=DAILY";
+  }
+  function esc(s) { return String(s).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n"); }
+  function fold(line) {   /* RFC 5545: 75 octets per line, never inside a multi-byte character */
+    var out = [], cur = "", n = 0, max = 75, chars = Array.from(line), i, c, b;
+    for (i = 0; i < chars.length; i++) {
+      c = chars[i].codePointAt(0); b = c < 0x80 ? 1 : c < 0x800 ? 2 : c < 0x10000 ? 3 : 4;
+      if (n + b > max) { out.push(cur); cur = " "; n = 1; max = 75; }
+      cur += chars[i]; n += b;
+    }
+    out.push(cur);
+    return out.join("\r\n");
+  }
+  function icsText(hour, now) {
+    now = now || new Date();
+    var d = firstDay(hour, now), u = now.toISOString().replace(/[-:]/g, "").replace(/\.\d+Z$/, "Z");
+    var lines = [
+      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Tzofen//Daily 5//HE", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
+      "BEGIN:VTIMEZONE", "TZID:" + TZ,
+      "BEGIN:DAYLIGHT", "TZOFFSETFROM:+0200", "TZOFFSETTO:+0300", "TZNAME:IDT", "DTSTART:20130329T020000",
+      "RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=FR;BYMONTHDAY=23,24,25,26,27,28,29", "END:DAYLIGHT",
+      "BEGIN:STANDARD", "TZOFFSETFROM:+0300", "TZOFFSETTO:+0200", "TZNAME:IST", "DTSTART:20131027T020000",
+      "RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU", "END:STANDARD",
+      "END:VTIMEZONE",
+      "BEGIN:VEVENT", "UID:daily5-practice@tzofen", "DTSTAMP:" + u, "SEQUENCE:" + Math.floor(now.getTime() / 60000),
+      "DTSTART;TZID=" + TZ + ":" + stamp(d, hour, 0), "DTEND;TZID=" + TZ + ":" + stamp(d, hour, 5),
+      "RRULE:FREQ=DAILY", "SUMMARY:" + esc(TITLE), "DESCRIPTION:" + esc("חמישה כרטיסים, שלוש דקות.\n" + practiceUrl()),
+      "URL:" + practiceUrl(), "TRANSP:TRANSPARENT",
+      "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + esc(TITLE), "TRIGGER:PT0M", "END:VALARM",
+      "END:VEVENT", "END:VCALENDAR"
+    ];
+    return lines.map(fold).join("\r\n") + "\r\n";
+  }
+  function downloadIcs(hour) {
+    var blob = new Blob([icsText(hour)], { type: "text/calendar;charset=utf-8" });
+    var url = URL.createObjectURL(blob), a = document.createElement("a");
+    a.href = url; a.download = "daily5.ics"; a.rel = "noopener"; document.body.appendChild(a); a.click();
+    setTimeout(function () { a.remove(); URL.revokeObjectURL(url); }, 4000);
+  }
+
+  /* ---------- environment and state ---------- */
+  function isIos() {
+    var ua = navigator.userAgent || "";
+    return /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  }
+  function standalone() { return navigator.standalone === true || (window.matchMedia && matchMedia("(display-mode: standalone)").matches); }
+  function canPush() { return "serviceWorker" in navigator && "PushManager" in window && "Notification" in window; }
+  /* unsupported | install (iPhone, not opened from the Home Screen) | denied | on (has saved prefs) | setup */
+  function state() {
+    if (!formReady()) return "unsupported";
+    if (!canPush()) return isIos() && !standalone() ? "install" : "unsupported";
+    if (Notification.permission === "denied") return "denied";
+    if (Notification.permission === "granted" && readPrefs()) return "on";
+    return "setup";
+  }
+  function snoozed() { return +(store(K.snooze) || 0) > Date.now(); }
+
+  /* ---------- subscribe ---------- */
+  function withTimeout(p, ms) {
+    return Promise.race([p, new Promise(function (_, rej) { setTimeout(function () { rej(new Error("timeout")); }, ms); })]);
+  }
+  function getSub() {
+    return withTimeout(navigator.serviceWorker.register("sw.js").catch(function () {}).then(function () { return navigator.serviceWorker.ready; }), 8000)
+      .then(function (reg) {
+        return reg.pushManager.getSubscription().then(function (s) {
+          return s || reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: ub64(VAPID_PUBLIC) });
+        });
+      });
+  }
+  /* must be called straight from the tap: requestPermission is the first thing that runs */
+  function enable(hour, types) {
+    var ask = Notification.permission === "default" ? Notification.requestPermission() : Promise.resolve(Notification.permission);
+    return Promise.resolve(ask).then(function (p) {
+      if (p !== "granted") throw new Error("perm");
+      return getSub();
+    }).then(function (sub) {
+      var j = sub.toJSON(); j.prefs = { t: types, h: hour };
+      return rowId().then(function (id) { return post(id, JSON.stringify(j), String(hour)); });
+    }).then(function () {
+      store(K.hour, String(hour)); store(K.prefs, JSON.stringify({ t: types, h: hour, ts: Date.now() }));
+    });
+  }
+  function disable() {
+    var p = readPrefs(), hour = p ? p.h : savedHour();
+    return withTimeout(navigator.serviceWorker.ready, 8000).then(function (reg) { return reg.pushManager.getSubscription(); }).then(function (sub) {
+      if (sub) {
+        var j = sub.toJSON(); j.prefs = { t: [], h: hour };
+        return rowId().then(function (id) { return post(id, JSON.stringify(j), String(hour)); });
+      }
+    }).then(function () { store(K.prefs, JSON.stringify({ t: [], h: hour, ts: Date.now() })); });
+  }
+  /* finished a counted practice session: tell the sender not to remind today */
+  function done() {
+    try {
+      var p = readPrefs(), d = ymd(new Date());
+      if (!formReady() || !p || p.t.indexOf("practice") < 0 || store(K.done) === d) return Promise.resolve();
+      return rowId().then(function (id) { return post(id, "", "done:" + d); }).then(function () { store(K.done, d); }).catch(function () {});
+    } catch (e) { return Promise.resolve(); }
+  }
+
+  /* ---------- view ---------- */
+  var mounted = [], uid = 0;
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function btn(text, cls, fn) { var b = el("button", "d5n-b" + (cls ? " " + cls : ""), text); b.type = "button"; b.addEventListener("click", fn); return b; }
+
+  var CSS = [
+    ".d5n{--n-ink:var(--ink,#17181a);--n-ink2:var(--ink-2,var(--ink2,#45474c));--n-ink3:var(--ink-3,var(--ink3,#5c5f64));",
+    "--n-surface:var(--surface,#fff);--n-surface2:var(--surface-2,var(--surface2,#f7f7f4));--n-line:var(--line,#e1e1db);--n-line2:var(--line-2,var(--line2,#c6c6bf));",
+    "--n-mark:var(--mark,#f4b41a);--n-markh:var(--mark-hover,#e6a710);--n-onmark:var(--on-mark,#17181a);--n-free:var(--free,#3c6635);--n-hot:var(--hot,#b8261a);",
+    "color:var(--n-ink);font-family:inherit;min-width:0}",
+    ".d5n[hidden]{display:none!important}.d5n[data-d5n]{grid-column:1/-1}",
+    ".d5n-card{display:flex;flex-direction:column;gap:12px;background:var(--n-surface);border:1px solid var(--n-line);border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(23,22,18,.05),0 8px 22px -16px rgba(23,22,18,.25)}",
+    ".d5n-panel{display:flex;flex-direction:column;gap:12px}",
+    ".d5n-t{margin:0;font-size:1.0625rem;font-weight:600;line-height:1.3}",
+    ".d5n-p{margin:0;font-size:.9375rem;line-height:1.5;color:var(--n-ink2)}",
+    ".d5n-row{display:flex;flex-wrap:wrap;gap:8px}",
+    ".d5n-b{min-height:44px;padding:0 16px;border-radius:10px;border:1px solid var(--n-line2);background:var(--n-surface);color:var(--n-ink);font-family:inherit;font-size:.9375rem;font-weight:500;line-height:1.2;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;text-align:center;transition:transform .12s,background-color .12s}",
+    ".d5n-b:hover{background:var(--n-surface2)}.d5n-b:active{transform:scale(.98)}",
+    ".d5n-b.pri{background:var(--n-mark);border-color:var(--n-mark);color:var(--n-onmark)}.d5n-b.pri:hover{background:var(--n-markh)}",
+    ".d5n-b[disabled]{opacity:.55;cursor:default}",
+    ".d5n-link{background:none;border:0;padding:0 2px;min-height:44px;color:var(--n-ink2);text-decoration:underline;text-underline-offset:3px;font:inherit;font-size:.875rem;cursor:pointer;align-self:flex-start}",
+    ".d5n-lbl{font-size:.8125rem;font-weight:500;color:var(--n-ink3)}",
+    ".d5n select{font:inherit;color:var(--n-ink);background:var(--n-surface);border:1px solid var(--n-line2);border-radius:10px;min-height:48px;padding:0 12px;width:100%}",
+    ".d5n fieldset{margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:6px;min-width:0}.d5n legend{padding:0;margin-bottom:6px}",
+    ".d5n-chk-list{border:1px solid var(--n-line2);border-radius:10px;overflow:hidden;background:var(--n-surface)}",
+    ".d5n-chk{display:flex;align-items:center;gap:12px;min-height:48px;padding:6px 14px;cursor:pointer;font-size:1rem}.d5n-chk+.d5n-chk{border-top:1px solid var(--n-line)}",
+    ".d5n-chk input{width:22px;height:22px;flex:none;margin:0;accent-color:var(--n-ink)}",
+    ".d5n-msg{margin:0;font-size:.875rem;line-height:1.4;min-height:1.4em;color:var(--n-ink2)}.d5n-msg:empty{display:none}.d5n-msg.ok{color:var(--n-free)}.d5n-msg.bad{color:var(--n-hot)}",
+    ".d5n-cal{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--n-line);padding-top:12px}",
+    ".d5n :focus-visible{outline:2px solid var(--n-ink);outline-offset:2px}",
+    "dialog.d5n-dlg{border:0;padding:0;margin:auto 0 0;width:100%;max-width:100%;max-height:92vh;max-height:92dvh;overflow:auto;background:var(--n-surface,#fff);color:var(--n-ink,#17181a);border-radius:22px 22px 0 0;box-sizing:border-box}",
+    "dialog.d5n-dlg::backdrop{background:rgba(23,22,18,.28)}",
+    "@media (min-width:600px){dialog.d5n-dlg{margin:auto;width:440px;border-radius:22px}}",
+    ".d5n-dh{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 16px 4px}.d5n-dh .d5n-t{font-size:1.25rem}",
+    ".d5n-db{padding:8px 16px calc(20px + env(safe-area-inset-bottom,0px))}",
+    ".d5n-x{width:44px;height:44px;border:0;background:none;color:var(--n-ink2);border-radius:10px;font-size:1.5rem;line-height:1;cursor:pointer}",
+    "@media (prefers-reduced-motion:reduce){.d5n-b{transition:none}}"
+  ].join("");
+
+  function hourSelect(value, onChange) {
+    var s = el("select"); s.id = "d5n-h" + (++uid);
+    for (var h = 7; h <= 22; h++) { var o = el("option", "", hh(h)); o.value = h; s.appendChild(o); }
+    s.value = String(value);
+    if (onChange) s.addEventListener("change", onChange);
+    return s;
+  }
+
+  function calendarBlock(getHour, ownSelect) {
+    var wrap = el("div", "d5n-cal"), sel = null, g;
+    wrap.appendChild(el("p", "d5n-lbl", "הוספה ליומן"));
+    wrap.appendChild(el("p", "d5n-p", "אירוע יומי של 5 דקות, אפשר גם בלי התראות מהאפליקציה."));
+    if (ownSelect) {
+      var l = el("label", "d5n-lbl", "באיזו שעה?"); sel = hourSelect(savedHour(), upd); l.htmlFor = sel.id;
+      wrap.appendChild(l); wrap.appendChild(sel); getHour = function () { return +sel.value; };
+    }
+    var row = el("div", "d5n-row");
+    g = el("a", "d5n-b", "יומן גוגל"); g.target = "_blank"; g.rel = "noopener";
+    row.appendChild(g);
+    row.appendChild(btn("קובץ ליומן (אייפון ואחרים)", "", function () { downloadIcs(getHour()); }));
+    wrap.appendChild(row);
+    function upd() { g.href = googleUrl(getHour()); }
+    upd();
+    wrap._upd = upd;
+    return wrap;
+  }
+
+  function formBlock(m, st) {
+    var wrap = el("div", "d5n-panel"), p = readPrefs(), on = st === "on";
+    var allowed = TYPES.filter(function (t) { return t[0] !== "practice" || unlocked(); });
+    var chosen = p ? p.t : allowed.map(function (t) { return t[0]; });
+    var msg = el("p", "d5n-msg"); msg.setAttribute("role", "status"); msg.setAttribute("aria-live", "polite");
+    var cal = null;
+    if (on) {
+      wrap.appendChild(el("p", "d5n-p", p.t.length ? "התזכורות פועלות, כל יום ב-" + hh(p.h) + "." : "התזכורות כבויות."));
+    }
+    var lh = el("label", "d5n-lbl", "באיזו שעה?"), sel = hourSelect(savedHour(), function () { if (cal) cal._upd(); });
+    lh.htmlFor = sel.id; wrap.appendChild(lh); wrap.appendChild(sel);
+    var fs = el("fieldset"), lg = el("legend", "d5n-lbl", "מה להזכיר"), list = el("div", "d5n-chk-list"), boxes = [];
+    fs.appendChild(lg);
+    allowed.forEach(function (t) {
+      var lab = el("label", "d5n-chk"), cb = el("input"); cb.type = "checkbox"; cb.value = t[0]; cb.checked = chosen.indexOf(t[0]) >= 0;
+      boxes.push(cb); lab.appendChild(cb); lab.appendChild(el("span", "", t[1])); list.appendChild(lab);
+    });
+    fs.appendChild(list); wrap.appendChild(fs);
+    function say(t, k) { msg.textContent = t || ""; msg.className = "d5n-msg" + (k ? " " + k : ""); }
+    var go = btn(on ? "שמירה" : "הפעלת תזכורות", "pri", function () {
+      var types = boxes.filter(function (b) { return b.checked; }).map(function (b) { return b.value; }), hour = +sel.value;
+      if (!types.length) { say("בחרו לפחות סוג אחד של תזכורת.", "bad"); return; }
+      go.disabled = true; say("רגע...");
+      enable(hour, types).then(function () {
+        m.ui.msg = ["סגור. התזכורות יגיעו בשעה " + hh(hour) + ".", "ok"]; m.ui.phase = "done"; refresh();
+      }).catch(function (e) {
+        var perm = e && e.message === "perm";
+        if (perm && state() === "denied") { refresh(); return; }
+        say(perm ? "בלי הרשאה אי אפשר לשלוח תזכורות. אפשר לנסות שוב." : "משהו השתבש. נסו שוב בעוד רגע.", "bad");
+        go.disabled = false;
+      });
+    });
+    var row = el("div", "d5n-row"); row.appendChild(go);
+    if (m.kind === "card") row.appendChild(btn("לא עכשיו", "", function () { snooze(m); }));
+    wrap.appendChild(row);
+    if (on && p.t.length) {
+      var off = el("button", "d5n-link", "כיבוי התזכורות"); off.type = "button";
+      off.addEventListener("click", function () {
+        off.disabled = true; say("רגע...");
+        disable().then(function () { m.ui.msg = ["התזכורות כבויות.", "ok"]; refresh(); }).catch(function () { say("משהו השתבש. נסו שוב בעוד רגע.", "bad"); off.disabled = false; });
+      });
+      wrap.appendChild(off);
+    }
+    wrap.appendChild(msg);
+    if (m.ui.msg) { say(m.ui.msg[0], m.ui.msg[1]); m.ui.msg = null; }
+    if (unlocked()) { cal = calendarBlock(function () { return +sel.value; }, false); wrap.appendChild(cal); }
+    return wrap;
+  }
+
+  function snooze(m) { store(K.snooze, String(Date.now() + SNOOZE_MS)); m.ui.phase = "closed"; refresh(); }
+
+  function render(m) {
+    var host = m.host, st = state(), ui = m.ui, box, focusEl = null;
+    host.textContent = ""; host.classList.add("d5n"); host.setAttribute("dir", "rtl"); host.setAttribute("lang", "he");
+    if (m.kind === "card") {
+      var show = ui.phase !== "closed" && (ui.phase === "done" || ui.phase === "form" || (!snoozed() && (st === "setup" || st === "install")));
+      if (!show) { host.hidden = true; return; }
+    }
+    host.hidden = false;
+    if (m.kind === "panel") box = host; else { box = el("div", "d5n-card"); host.appendChild(box); }
+
+    if (m.kind === "card" && ui.phase === "done") {
+      box.appendChild(el("p", "d5n-t", "תזכורות"));
+      var mm = el("p", "d5n-msg ok", ui.msg ? ui.msg[0] : "סגור."); mm.setAttribute("role", "status"); box.appendChild(mm);
+      box.appendChild(el("p", "d5n-p", "אפשר לשנות או לכבות בכל רגע בכפתור \"תזכורות\" בתחתית העמוד."));
+      box.appendChild(btn("סגירה", "", function () { ui.phase = "closed"; ui.msg = null; refresh(); }));
+      return;
+    }
+    if (m.kind === "section") box.appendChild(el("p", "d5n-t", "תזכורת יומית"));
+    if (m.kind === "section" && st === "setup") box.appendChild(el("p", "d5n-p", "הודעה קצרה בשעה שתבחרו, ורק אם עוד לא סיימתם."));
+
+    if (m.kind === "card" && ui.phase !== "form") {
+      box.appendChild(el("p", "d5n-t", "רוצים תזכורות?"));
+      if (st === "install") {
+        box.appendChild(el("p", "d5n-p", "תזכורות עובדות רק מהאפליקציה שעל מסך הבית. בספארי: שיתוף, הוספה למסך הבית, ופותחים אותה משם."));
+        box.appendChild(btn("הבנתי", "", function () { snooze(m); }));
+      } else {
+        box.appendChild(el("p", "d5n-p", "הודעה קצרה פעם ביום, בשעה שתבחרו. אפשר לשנות או לכבות בכל רגע."));
+        var row = el("div", "d5n-row");
+        var yes = btn("כן", "pri", function () { ui.phase = "form"; ui.focus = true; refresh(); });
+        row.appendChild(yes); row.appendChild(btn("לא עכשיו", "", function () { snooze(m); }));
+        box.appendChild(row);
+      }
+      return;
+    }
+    if (m.kind === "card") box.appendChild(el("p", "d5n-t", "תזכורות"));
+
+    if (st === "unsupported") {
+      box.appendChild(el("p", "d5n-p", "הדפדפן הזה לא תומך בתזכורות. אפשר להוסיף אירוע יומי ליומן."));
+      if (unlocked()) box.appendChild(calendarBlock(null, true));
+    } else if (st === "install") {
+      box.appendChild(el("p", "d5n-p", "תזכורות עובדות רק מהאפליקציה שעל מסך הבית. בספארי: שיתוף, הוספה למסך הבית, ופותחים אותה משם."));
+      if (unlocked()) box.appendChild(calendarBlock(null, true));
+    } else if (st === "denied") {
+      box.appendChild(el("p", "d5n-p", "ההתראות חסומות לאפליקציה הזו. כדי להפעיל: הגדרות הטלפון, התראות, היום ומחר, ולאפשר התראות. אחר כך חוזרים לכאן."));
+      if (unlocked()) box.appendChild(calendarBlock(null, true));
+    } else {
+      box.appendChild(formBlock(m, st));
+    }
+    if (ui.focus) { ui.focus = false; var f = box.querySelector("select,button,a"); if (f) f.focus({ preventScroll: false }); }
+  }
+
+  function refresh() {
+    mounted = mounted.filter(function (m) { return m.host.isConnected; });
+    mounted.forEach(render);
+    footerButton();
+  }
+
+  function mount(host, kind) {
+    if (typeof document === "undefined" || !host) return;
+    if (!document.getElementById("d5n-css")) { var s = el("style"); s.id = "d5n-css"; s.textContent = CSS; document.head.appendChild(s); }
+    if (!mounted.some(function (m) { return m.host === host; })) mounted.push({ host: host, kind: kind, ui: { phase: "ask" } });
+    refresh();
+  }
+
+  /* the footer button (home page): reopens the same panel in a dialog, whatever the card state is */
+  function footerButton() {
+    var acts = document.querySelector(".foot .acts");
+    if (!acts || document.getElementById("foot-notify") || !document.querySelector("[data-d5n=card]")) return;
+    var st = state();
+    if (st === "unsupported" && !unlocked()) return;
+    var b = el("button", "btn", "תזכורות"); b.type = "button"; b.id = "foot-notify";
+    b.addEventListener("click", openPanel);
+    var help = document.getElementById("foot-help");
+    acts.insertBefore(b, help || acts.firstChild);
+  }
+  function openPanel() {
+    var dlg = el("dialog", "d5n d5n-dlg"), head = el("div", "d5n-dh"), body = el("div", "d5n-db"), t = el("h2", "d5n-t", "תזכורות");
+    dlg.setAttribute("aria-labelledby", "d5n-dlg-t"); t.id = "d5n-dlg-t"; t.tabIndex = -1; dlg.setAttribute("dir", "rtl"); dlg.setAttribute("lang", "he");
+    var x = el("button", "d5n-x", "\u00d7"); x.type = "button"; x.setAttribute("aria-label", "סגירה");
+    head.appendChild(t); head.appendChild(x); dlg.appendChild(head); dlg.appendChild(body); document.body.appendChild(dlg);
+    var m = { host: body, kind: "panel", ui: { phase: "ask" } }; body.classList.add("d5n-panel"); mounted.push(m); render(m);
+    x.addEventListener("click", function () { dlg.close ? dlg.close() : dlg.removeAttribute("open"); });
+    dlg.addEventListener("close", function () { mounted = mounted.filter(function (q) { return q !== m; }); dlg.remove(); });
+    dlg.addEventListener("click", function (e) { if (e.target === dlg && dlg.close) dlg.close(); });
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
+    t.focus();
+  }
+
+  var api = { mount: mount, refresh: refresh, done: done, open: function () { if (typeof document !== "undefined") openPanel(); },
+    state: state, _ics: icsText, _google: googleUrl, _fold: fold };
+  G.D5Notify = api;
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+
+  if (typeof document !== "undefined") {
+    var init = function () {
+      var hosts = document.querySelectorAll("[data-d5n]");
+      for (var i = 0; i < hosts.length; i++) mount(hosts[i], hosts[i].getAttribute("data-d5n"));
+    };
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
+  }
+})();
+
 </script>
 </body>
 </html>
