@@ -3589,6 +3589,28 @@ TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
+UID:dl-20261110-ai-50@tzofen-home
+DTSTAMP:20261027T000000Z
+DTSTART;TZID=Asia/Jerusalem:20261110T235900
+DTEND;TZID=Asia/Jerusalem:20261110T235900
+SUMMARY:הגשה: בינה מלאכותית ואוריינות אקדמית
+ : מטלה 2 - להגיש כאן
+DESCRIPTION:למדה: https://lemida.biu.ac.il/mod/assign/view.php?id=32985
+ 97
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:הגשה מחר: בינה מלאכותית ואוריינות 
+ אקדמית: מטלה 2 - להגיש כאן
+TRIGGER:-P1D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:הגשה בעוד שעתיים: בינה מלאכותית וא
+ וריינות אקדמית: מטלה 2 - להגיש כאן
+TRIGGER:-PT2H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
 UID:dl-20261118-cyber-52@tzofen-home
 DTSTAMP:20261027T000000Z
 DTSTART;TZID=Asia/Jerusalem:20261118T180000

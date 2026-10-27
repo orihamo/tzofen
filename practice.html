@@ -1243,6 +1243,12 @@ function srcBlock(e){
   }
   return d;
 }
+/* every exam-style question can be reported: opens a WhatsApp message to Ori with the question named (a wrong question costs more than a missing one) */
+function reportLink(c){
+  var msg = "היי אורי, יש בעיה בשאלה בתרגול ("+c.course+", "+lessonLabel(c.lesson)+"): "+String(c.prompt||"").replace(/\s+/g," ").slice(0,70)+" [מזהה "+c.id+"]. ";
+  var a = el("a","link","טעות בשאלה? דווחו לאורי"); a.href = "https://wa.me/972559970958?text="+encodeURIComponent(msg); a.target = "_blank"; a.rel = "noopener noreferrer";
+  return a;
+}
 /* exam-style card: why the right option is right, the reason for the option the student picked, the other options on request */
 function mcqWhy(c, good, picked, w){
   var e = c.explain, dl = el("dl"), wrong = e.wrong || {};
@@ -1259,6 +1265,7 @@ function mcqWhy(c, good, picked, w){
     w.appendChild(tb);
   }
   var sb = srcBlock(e); if(sb) w.appendChild(sb);
+  w.appendChild(reportLink(c));
   return w;
 }
 function whyBlock(c, good, picked){
