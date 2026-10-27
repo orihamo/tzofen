@@ -807,6 +807,14 @@ function celebrate(n){
   try{ if(navigator.vibrate) navigator.vibrate([18,50,18]) }catch(e){}
   return d;
 }
+/* the bank keeps lesson numbers and a few named groups; students should never see an internal key */
+function lessonLabel(l){
+  l = String(l==null ? "" : l);
+  if(l==="glossary") return "מילון המרצה";
+  if(l==="map") return "מפת מושגים";
+  if(l==="0") return "רקע לקורס";
+  return /^\d+$/.test(l) ? "שיעור "+l : "חומר הקורס";
+}
 function say(kind, n){ var a = SAY[kind]; return a[(n||0) % a.length] }
 function keyTier(){ return streak()>=7 ? 1 : 0 }
 function sayBlock(mood, text, px){
@@ -1047,7 +1055,7 @@ function drawCard(){
   var c = run.cards[run.i], stage = $("#stage"), dock = $("#dock");
   stage.textContent = ""; dock.textContent = ""; run.locked = false; run.hinted = false;
   var card = el("div","card");
-  var src = c.course+" · שיעור "+c.lesson;
+  var src = c.course+" · "+lessonLabel(c.lesson);
   if(c.type==="match"){
     drawMatch(c, card);
   } else if(c.type==="mcq"){
@@ -1343,7 +1351,13 @@ function finish(){
     $("#e-cipherwrap").hidden = false;
     renderCipher($("#e-cipher"), true);
   }
-  var em = $("#e-more"); if(em){ em.hidden = !pickMore(run.free ? more.key : null).length; em.textContent = (run.free && more.key) ? "עוד חמש בקורס" : "עוד חמש שאלות" }
+  var em = $("#e-more");
+  if(em){
+    var nk = run.free ? more.key : null, nextList = pickMore(nk);
+    em.hidden = !nextList.length;
+    var allSeen = nextList.length>0 && nextList.every(function(c){ return sitting[c.id] });   // nothing new left: say it is a repeat
+    em.textContent = allSeen ? "לעבור שוב על השאלות" : (nk ? "עוד חמש בקורס" : "עוד חמש שאלות");
+  }
   var weak = $("#e-weak"); weak.textContent = "";
   if(run.misses.length){
     weak.hidden = false; weak.appendChild(el("p","label","לחזרה מחר"));
