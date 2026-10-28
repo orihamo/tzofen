@@ -1200,6 +1200,7 @@ function hintRecall(c, card, hb){
   if(run.hinted) return;
   run.hinted = true; hb.disabled = true; hb.textContent = "נעזרתם ברמז";
   var words = c.answer.split(/\s+/).slice(0,3).join(" ");
+  if(words.split("(").length > words.split(")").length) words = words.slice(0, words.lastIndexOf("(")).trim();   // never cut inside a bracket: "פנים (מי…"
   var box = el("div","hintbox", words+"…"); card.insertBefore(box, card.lastChild);
 }
 function sound(good){
