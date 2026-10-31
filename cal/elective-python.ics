@@ -1,0 +1,187 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//tzofen-home//he
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:פייתון (BISchool)
+X-WR-TIMEZONE:Asia/Jerusalem
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VTIMEZONE
+TZID:Asia/Jerusalem
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0300
+TZNAME:IDT
+DTSTART:19700327T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYMONTHDAY=23,24,25,26,27,28,29;BYDAY=FR
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0300
+TZOFFSETTO:+0200
+TZNAME:IST
+DTSTART:19701025T020000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:2026-11-01-1800-e-python@tzofen-home
+DTSTAMP:20261031T000000Z
+DTSTART;TZID=Asia/Jerusalem:20261101T180000
+DTEND;TZID=Asia/Jerusalem:20261101T203000
+SUMMARY:פייתון (BISchool)
+LOCATION:אונליין\, BISchool
+DESCRIPTION:אונליין\, BISchool\nנוכחות חובה עם מצלמ
+ ה פתוחה\, לפחות 80% מהמפגשים\nhttps://www.bischool.org/
+ paython
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:פייתון (BISchool)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-08-1800-e-python@tzofen-home
+DTSTAMP:20261031T000000Z
+DTSTART;TZID=Asia/Jerusalem:20261108T180000
+DTEND;TZID=Asia/Jerusalem:20261108T203000
+SUMMARY:פייתון (BISchool)
+LOCATION:אונליין\, BISchool
+DESCRIPTION:אונליין\, BISchool\nנוכחות חובה עם מצלמ
+ ה פתוחה\, לפחות 80% מהמפגשים\nhttps://www.bischool.org/
+ paython
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:פייתון (BISchool)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-15-1800-e-python@tzofen-home
+DTSTAMP:20261031T000000Z
+DTSTART;TZID=Asia/Jerusalem:20261115T180000
+DTEND;TZID=Asia/Jerusalem:20261115T203000
+SUMMARY:פייתון (BISchool)
+LOCATION:אונליין\, BISchool
+DESCRIPTION:אונליין\, BISchool\nנוכחות חובה עם מצלמ
+ ה פתוחה\, לפחות 80% מהמפגשים\nhttps://www.bischool.org/
+ paython
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:פייתון (BISchool)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-22-1800-e-python@tzofen-home
+DTSTAMP:20261031T000000Z
+DTSTART;TZID=Asia/Jerusalem:20261122T180000
+DTEND;TZID=Asia/Jerusalem:20261122T203000
+SUMMARY:פייתון (BISchool)
+LOCATION:אונליין\, BISchool
+DESCRIPTION:אונליין\, BISchool\nנוכחות חובה עם מצלמ
+ ה פתוחה\, לפחות 80% מהמפגשים\nhttps://www.bischool.org/
+ paython
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:פייתון (BISchool)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-29-1800-e-python@tzofen-home
+DTSTAMP:20261031T000000Z
+DTSTART;TZID=Asia/Jerusalem:20261129T180000
+DTEND;TZID=Asia/Jerusalem:20261129T203000
+SUMMARY:פייתון (BISchool)
+LOCATION:אונליין\, BISchool
+DESCRIPTION:אונליין\, BISchool\nנוכחות חובה עם מצלמ
+ ה פתוחה\, לפחות 80% מהמפגשים\nhttps://www.bischool.org/
+ paython
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:פייתון (BISchool)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-13-1800-e-python@tzofen-home
+DTSTAMP:20261031T000000Z
+DTSTART;TZID=Asia/Jerusalem:20261213T180000
+DTEND;TZID=Asia/Jerusalem:20261213T203000
+SUMMARY:פייתון (BISchool)
+LOCATION:אונליין\, BISchool
+DESCRIPTION:אונליין\, BISchool\nנוכחות חובה עם מצלמ
+ ה פתוחה\, לפחות 80% מהמפגשים\nhttps://www.bischool.org/
+ paython
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:פייתון (BISchool)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-27-1800-e-python@tzofen-home
+DTSTAMP:20261031T000000Z
+DTSTART;TZID=Asia/Jerusalem:20261227T180000
+DTEND;TZID=Asia/Jerusalem:20261227T203000
+SUMMARY:פייתון (BISchool)
+LOCATION:אונליין\, BISchool
+DESCRIPTION:אונליין\, BISchool\nנוכחות חובה עם מצלמ
+ ה פתוחה\, לפחות 80% מהמפגשים\nhttps://www.bischool.org/
+ paython
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:פייתון (BISchool)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-03-1800-e-python@tzofen-home
+DTSTAMP:20261031T000000Z
+DTSTART;TZID=Asia/Jerusalem:20270103T180000
+DTEND;TZID=Asia/Jerusalem:20270103T203000
+SUMMARY:פייתון (BISchool)
+LOCATION:אונליין\, BISchool
+DESCRIPTION:אונליין\, BISchool\nנוכחות חובה עם מצלמ
+ ה פתוחה\, לפחות 80% מהמפגשים\nhttps://www.bischool.org/
+ paython
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:פייתון (BISchool)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-10-1800-e-python@tzofen-home
+DTSTAMP:20261031T000000Z
+DTSTART;TZID=Asia/Jerusalem:20270110T180000
+DTEND;TZID=Asia/Jerusalem:20270110T203000
+SUMMARY:פייתון (BISchool)
+LOCATION:אונליין\, BISchool
+DESCRIPTION:אונליין\, BISchool\nנוכחות חובה עם מצלמ
+ ה פתוחה\, לפחות 80% מהמפגשים\nhttps://www.bischool.org/
+ paython
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:פייתון (BISchool)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-17-1800-e-python@tzofen-home
+DTSTAMP:20261031T000000Z
+DTSTART;TZID=Asia/Jerusalem:20270117T180000
+DTEND;TZID=Asia/Jerusalem:20270117T203000
+SUMMARY:פייתון (BISchool)
+LOCATION:אונליין\, BISchool
+DESCRIPTION:אונליין\, BISchool\nנוכחות חובה עם מצלמ
+ ה פתוחה\, לפחות 80% מהמפגשים\nhttps://www.bischool.org/
+ paython
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:פייתון (BISchool)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+END:VCALENDAR
