@@ -3658,24 +3658,24 @@ TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-UID:dl-20261119-cyber-67@tzofen-home
+UID:dl-20261124-cyber-64@tzofen-home
 DTSTAMP:20261104T000000Z
-DTSTART;TZID=Asia/Jerusalem:20261119T180000
-DTEND;TZID=Asia/Jerusalem:20261119T180000
-SUMMARY:הגשה: מבוא לסייבר: 1. בוחן על "מבט בינת
- חומי על אתגרי הביטחון בעידן המידע"
+DTSTART;TZID=Asia/Jerusalem:20261124T180000
+DTEND;TZID=Asia/Jerusalem:20261124T180000
+SUMMARY:הגשה: מבוא לסייבר: בוחן על "מבט בינתחו
+ מי על אתגרי הביטחון בעידן המידע"
 DESCRIPTION:למדה: https://lemida.biu.ac.il/mod/quiz/view.php?id=3282860
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:הגשה מחר: מבוא לסייבר: 1. בוחן על "מב
- ט בינתחומי על אתגרי הביטחון בעידן המידע"
+DESCRIPTION:הגשה מחר: מבוא לסייבר: בוחן על "מבט 
+ בינתחומי על אתגרי הביטחון בעידן המידע"
 TRIGGER:-P1D
 END:VALARM
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:הגשה בעוד שעתיים: מבוא לסייבר: 1. בו
- חן על "מבט בינתחומי על אתגרי הביטחון בעיד
- ן המידע"
+DESCRIPTION:הגשה בעוד שעתיים: מבוא לסייבר: בוחן
+  על "מבט בינתחומי על אתגרי הביטחון בעידן 
+ המידע"
 TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
