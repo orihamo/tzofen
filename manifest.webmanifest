@@ -3,19 +3,19 @@
   "short_name": "היום ומחר",
   "lang": "he",
   "dir": "rtl",
+  "description": "השיעור הבא, היום ומחר, דדליינים ומבחנים - צופן שנה א'",
   "display": "browser",
-  "background_color": "#f2f2ee",
-  "theme_color": "#f2f2ee",
+  "display_override": ["browser"],
+  "scope": "./",
+  "background_color": "#1B1F27",
+  "theme_color": "#1B1F27",
   "icons": [
-    {
-      "src": "icon4-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon4-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
+    {"src": "icon4-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon4-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "קורסים", "url": "./?t=prep", "icons": [{"src": "icon4-192.png", "sizes": "192x192", "type": "image/png"}]},
+    {"name": "דדליינים", "url": "./?t=dl", "icons": [{"src": "icon4-192.png", "sizes": "192x192", "type": "image/png"}]}
   ]
 }
