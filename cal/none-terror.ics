@@ -385,18 +385,18 @@ TRIGGER:-PT15M
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-11-10-1600-crypto@tzofen-home
+UID:2026-11-10-1600-stats@tzofen-home
 DTSTAMP:20261109T000000Z
 DTSTART;TZID=Asia/Jerusalem:20261110T160000
 DTEND;TZID=Asia/Jerusalem:20261110T173000
-SUMMARY:עקרונות ההצפנה
-LOCATION:בר-אילן
-DESCRIPTION:בר-אילן\nלמדה: https://lemida.biu.ac.il/course/view.p
- hp?id=113998\nמקור: לו"ז צופן הרשמי https://mzb.biu.ac.il/
- node/5776
+SUMMARY:סטטיסטיקה א' - מפגש 2
+LOCATION:בניין 905 כיתה 62
+DESCRIPTION:בניין 905 כיתה 62\nלמדה: https://lemida.biu.ac.il/
+ course/view.php?id=115911\nמקור: לו"ז צופן הרשמי https://m
+ zb.biu.ac.il/node/5776
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:עקרונות ההצפנה
+DESCRIPTION:סטטיסטיקה א' - מפגש 2
 TRIGGER:-PT15M
 END:VALARM
 END:VEVENT
@@ -482,18 +482,18 @@ TRIGGER:-PT15M
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-11-17-1600-stats@tzofen-home
+UID:2026-11-17-1600-crypto@tzofen-home
 DTSTAMP:20261109T000000Z
 DTSTART;TZID=Asia/Jerusalem:20261117T160000
 DTEND;TZID=Asia/Jerusalem:20261117T173000
-SUMMARY:סטטיסטיקה א' - מפגש 2
-LOCATION:בניין 905 כיתה 62
-DESCRIPTION:בניין 905 כיתה 62\nלמדה: https://lemida.biu.ac.il/
- course/view.php?id=115911\nמקור: לו"ז צופן הרשמי https://m
- zb.biu.ac.il/node/5776
+SUMMARY:עקרונות ההצפנה
+LOCATION:בר-אילן
+DESCRIPTION:בר-אילן\nלמדה: https://lemida.biu.ac.il/course/view.p
+ hp?id=113998\nמקור: לו"ז צופן הרשמי https://mzb.biu.ac.il/
+ node/5776
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:סטטיסטיקה א' - מפגש 2
+DESCRIPTION:עקרונות ההצפנה
 TRIGGER:-PT15M
 END:VALARM
 END:VEVENT
