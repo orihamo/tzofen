@@ -2504,3 +2504,74 @@ if (S_DAMAGED && !S) document.getElementById("set-err").textContent="ההגדר�
     vv.addEventListener("resize", q); vv.addEventListener("scroll", q);
   }
 })();
+
+(function(){
+  "use strict";
+  var RM = matchMedia("(prefers-reduced-motion: reduce)"), WIDE = matchMedia("(min-width:900px)");
+  var SWIPE = ["today", "week", "prep", "dl"];   /* the tabs a phone shows; Library and Practice live under More */
+  var prev = window.setTab;
+  function stagger(v){
+    if (!v || RM.matches) return;
+    var items = [], kids = v.children, i, j, k;
+    for (i = 0; i < kids.length; i++){
+      k = kids[i];
+      if (k.classList.contains("stack")){ for (j = 0; j < k.children.length; j++) items.push(k.children[j]) } else items.push(k);
+    }
+    items = items.filter(function(el){ return !el.hidden }).slice(0, 8);
+    items.forEach(function(el, n){
+      el.animate([{opacity: 0, transform: "translate3d(0,12px,0)"}, {opacity: 1, transform: "translate3d(0,0,0)"}],
+        {duration: 380, delay: 40 + n * 32, easing: "cubic-bezier(.2,.9,.25,1)", fill: "backwards"});
+    });
+  }
+  window.setTab = function(t, focus){
+    var from = TAB;
+    var r = prev(t, focus);
+    if (t !== from) stagger(document.getElementById("v-" + t));
+    return r;
+  };
+
+  var sx, sy, st, live = false;
+  function scrollsSideways(el){
+    for (; el && el !== doc.body; el = el.parentElement){
+      if (el.scrollWidth > el.clientWidth + 2){ var o = getComputedStyle(el).overflowX; if (o === "auto" || o === "scroll") return true }
+      if (el.matches && el.matches("input,textarea,select,[contenteditable],.seg-thumb")) return true;
+    }
+    return false;
+  }
+  var doc = document;   /* the whole page, not just #main: a short tab leaves empty screen below its content */
+  doc.addEventListener("touchstart", function(e){
+    live = false;
+    if (WIDE.matches || e.touches.length !== 1 || doc.querySelector("dialog[open]") || !e.target.closest || e.target.closest(".tabbar,.topbar,header.top,dialog,#v-prac,.toast") || scrollsSideways(e.target)) return;
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY; st = Date.now(); live = true;
+  }, {passive: true});
+  doc.addEventListener("touchend", function(e){
+    if (!live) return; live = false;
+    var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy, dt = Math.max(1, Date.now() - st);
+    if (Math.abs(dx) < 56 || Math.abs(dx) < Math.abs(dy) * 1.8 || (Math.abs(dx) < 110 && Math.abs(dx) / dt < .35)) return;
+    var i = SWIPE.indexOf(TAB); if (i < 0) return;
+    var n = i + (dx > 0 ? 1 : -1);   /* RTL: later tabs sit to the left, so a flick to the right goes forward */
+    if (n < 0 || n >= SWIPE.length) return;
+    setTab(SWIPE[n]);
+    try { if (navigator.vibrate && navigator.userActivation && navigator.userActivation.isActive) navigator.vibrate(8) } catch (x) {}
+  }, {passive: true});
+
+  function roll(el){
+    if (RM.matches || !el.animate) return;
+    el.animate([{opacity: 0, transform: "translate3d(0,7px,0)"}, {opacity: 1, transform: "translate3d(0,0,0)"}],
+      {duration: 280, easing: "cubic-bezier(.2,.9,.25,1)"});
+  }
+  var seen = new WeakMap();
+  new MutationObserver(function(list){
+    list.forEach(function(m){
+      var el = m.target.nodeType === 1 ? m.target : m.target.parentElement, c;
+      if (!el) return;
+      c = el.closest && el.closest("[data-to],#dl-badge");
+      if (!c || c.hidden) return;
+      if (c.hasAttribute("data-to") && +c.dataset.to - Date.now() < 15 * 60e3 + 1000) return;   /* the last 15 minutes tick every second: no animation */
+      var txt = c.textContent;
+      if (seen.get(c) === txt) return;
+      var had = seen.has(c); seen.set(c, txt);
+      if (had) roll(c);
+    });
+  }).observe(document.body, {childList: true, characterData: true, subtree: true});
+})();
