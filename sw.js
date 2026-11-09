@@ -2,7 +2,7 @@
    Modes: "normal"      page network first (3 s), last good copy when offline, refreshed in the background
           "passthrough" emergency: no caching at all, push still works, old caches deleted
           "kill"        last resort: deletes caches, unregisters itself (this also drops push subscriptions) */
-const BUILD = "04a55b46";
+const BUILD = "d85a5098";
 const MODE = "normal";
 const ASSETS = ["a/app.552b0436.css", "a/app.a256b755.js", "a/outfit-latin.8c9aecb0.woff2", "a/varela-hebrew.80c8f2db.woff2"];               // hashed files under a/, immutable: cache first
 const V = "tzofen-" + BUILD;             // page copies, one cache per build
