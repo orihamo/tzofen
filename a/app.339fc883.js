@@ -2254,7 +2254,7 @@ if (S_DAMAGED && !S) document.getElementById("set-err").textContent="ההגדר�
     }
     return {pts: pts, ms: T * 1000};
   }
-  var S1 = springPts(1, .34, 24), SB = springPts(.62, .4, 28);
+  var S1 = springPts(1, .23, 20), SB = springPts(.62, .32, 24);
   function anim(el, S, frame){
     var kf = S.pts.map(frame);
     return el.animate(kf, {duration: S.ms, easing: "linear", fill: "backwards"});
