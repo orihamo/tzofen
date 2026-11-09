@@ -6,6 +6,8 @@
   "description": "השיעור הבא, היום ומחר, דדליינים ומבחנים - צופן שנה א'",
   "display": "browser",
   "display_override": ["browser"],
+  "id": "./",
+  "start_url": "./",
   "scope": "./",
   "background_color": "#1B1F27",
   "theme_color": "#1B1F27",
