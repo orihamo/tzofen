@@ -3492,6 +3492,27 @@ TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
+UID:dl-20261201-stats-51@tzofen-home
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Jerusalem:20261201T235900
+DTEND;TZID=Asia/Jerusalem:20261201T235900
+SUMMARY:הגשה: סטטיסטיקה א': מטלה בנושא משתנים 
+ - להגשה עד 31.12.26
+DESCRIPTION:למדה: https://lemida.biu.ac.il/mod/quiz/view.php?id=3313983
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:הגשה מחר: סטטיסטיקה א': מטלה בנושא מ
+ שתנים - להגשה עד 31.12.26
+TRIGGER:-P1D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:הגשה בעוד שעתיים: סטטיסטיקה א': מטל
+ ה בנושא משתנים - להגשה עד 31.12.26
+TRIGGER:-PT2H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
 UID:dl-20261215-natsec-59@tzofen-home
 DTSTAMP:20261110T000000Z
 DTSTART;TZID=Asia/Jerusalem:20261215T200000

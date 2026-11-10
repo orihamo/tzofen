@@ -1154,7 +1154,7 @@ document.addEventListener("click",e=>{
   const day=t.closest("[data-day]"); if (day){ goDay(day.dataset.day); return }
   const wk=t.closest("[data-week]");
   if (wk){ const n=+wk.dataset.week; WEEK_OFF = n===0?0:WEEK_OFF+n; SEL_DAY=null; render(true); return }
-  const go=t.closest("[data-tab]"); if (go){ setTab(go.dataset.tab); return }
+  const go=t.closest("button[data-tab]"); if (go){ setTab(go.dataset.tab); return }
   if (t.closest("[data-open-set]")){ openSetup(); return }
   if (t.closest("[data-park-refresh]")){ fetchParking(); return }
   if (t.closest("[data-prac-retry]")){ loadPractice(); return }
@@ -1609,7 +1609,11 @@ function lecturers(){
   }
   document.getElementById("lect-list").innerHTML = rows.join("") || `<li>אין עדיין פרטים מהסילבוסים.</li>`;
 }
-function openIcs(){ openSetup(); document.getElementById("cal-box").scrollIntoView({block:"start"}) }
+function openIcs(){
+  openSetup();
+  document.getElementById("more-opts").hidden=false; document.getElementById("opts-toggle").hidden=true;   // on a first run the calendar box sits inside the folded options
+  document.getElementById("cal-box").scrollIntoView({block:"start"});
+}
 
 const UPDATES=[
   {id:"2026-11-06-f", date:"2026-11-06", tab:"קורסים", text:"בלשונית קורסים רואים לכל קורס את השיעור הבא, ההקלטות, המרצה והבוחן הבא. קורסים בלי נושא עדיין מקופלים לשורה אחת."},
