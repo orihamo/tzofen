@@ -3637,10 +3637,10 @@ TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-UID:dl-20261118-cyber-52@tzofen-home
+UID:dl-20261117-cyber-52@tzofen-home
 DTSTAMP:20261110T000000Z
-DTSTART;TZID=Asia/Jerusalem:20261118T180000
-DTEND;TZID=Asia/Jerusalem:20261118T180000
+DTSTART;TZID=Asia/Jerusalem:20261117T180000
+DTEND;TZID=Asia/Jerusalem:20261117T180000
 SUMMARY:הגשה: מבוא לסייבר: בוחן: Stuxnet והמצב 15 ש
  נים אחרי הגילוי
 DESCRIPTION:למדה: https://lemida.biu.ac.il/mod/quiz/view.php?id=3288960
