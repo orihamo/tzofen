@@ -3478,28 +3478,6 @@ TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-UID:dl-20261124-cyber-64@tzofen-home
-DTSTAMP:20261116T000000Z
-DTSTART;TZID=Asia/Jerusalem:20261124T180000
-DTEND;TZID=Asia/Jerusalem:20261124T180000
-SUMMARY:הגשה: מבוא לסייבר: בוחן על "מבט בינתחו
- מי על אתגרי הביטחון בעידן המידע"
-DESCRIPTION:למדה: https://lemida.biu.ac.il/mod/quiz/view.php?id=3282860
-BEGIN:VALARM
-ACTION:DISPLAY
-DESCRIPTION:הגשה מחר: מבוא לסייבר: בוחן על "מבט 
- בינתחומי על אתגרי הביטחון בעידן המידע"
-TRIGGER:-P1D
-END:VALARM
-BEGIN:VALARM
-ACTION:DISPLAY
-DESCRIPTION:הגשה בעוד שעתיים: מבוא לסייבר: בוחן
-  על "מבט בינתחומי על אתגרי הביטחון בעידן 
- המידע"
-TRIGGER:-PT2H
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
 UID:dl-20261125-ai-54@tzofen-home
 DTSTAMP:20261116T000000Z
 DTSTART;TZID=Asia/Jerusalem:20261125T235900
@@ -3589,6 +3567,28 @@ TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
+UID:dl-20261210-cyber-64@tzofen-home
+DTSTAMP:20261116T000000Z
+DTSTART;TZID=Asia/Jerusalem:20261210T180000
+DTEND;TZID=Asia/Jerusalem:20261210T180000
+SUMMARY:הגשה: מבוא לסייבר: בוחן על "מבט בינתחו
+ מי על אתגרי הביטחון בעידן המידע"
+DESCRIPTION:למדה: https://lemida.biu.ac.il/mod/quiz/view.php?id=3282860
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:הגשה מחר: מבוא לסייבר: בוחן על "מבט 
+ בינתחומי על אתגרי הביטחון בעידן המידע"
+TRIGGER:-P1D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:הגשה בעוד שעתיים: מבוא לסייבר: בוחן
+  על "מבט בינתחומי על אתגרי הביטחון בעידן 
+ המידע"
+TRIGGER:-PT2H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
 UID:dl-20261215-natsec-59@tzofen-home
 DTSTAMP:20261116T000000Z
 DTSTART;TZID=Asia/Jerusalem:20261215T200000
@@ -3602,6 +3602,27 @@ ACTION:DISPLAY
 DESCRIPTION:בוחן אמצע ביסודות הביטחון הלאומי (1
  5% מהציון)\, במקום השיעור
 TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:dl-20261222-cyber-42@tzofen-home
+DTSTAMP:20261116T000000Z
+DTSTART;TZID=Asia/Jerusalem:20261222T180000
+DTEND;TZID=Asia/Jerusalem:20261222T180000
+SUMMARY:הגשה: מבוא לסייבר: בוחן: בינה מלאכותי
+ ת בשדה הקרב
+DESCRIPTION:למדה: https://lemida.biu.ac.il/mod/quiz/view.php?id=3287219
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:הגשה מחר: מבוא לסייבר: בוחן: בינה מל
+ אכותית בשדה הקרב
+TRIGGER:-P1D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:הגשה בעוד שעתיים: מבוא לסייבר: בוחן
+ : בינה מלאכותית בשדה הקרב
+TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
