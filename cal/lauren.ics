@@ -3458,8 +3458,8 @@ DTSTART;TZID=Asia/Jerusalem:20261125T235900
 DTEND;TZID=Asia/Jerusalem:20261125T235900
 SUMMARY:הגשה: בינה מלאכותית ואוריינות אקדמית
  : מטלה 3 - להגיש כאן -שב
-DESCRIPTION:למדה: https://lemida.biu.ac.il/mod/assign/view.php?id=33071
- 02
+DESCRIPTION:למדה: https://lemida.biu.ac.il/mod/assign/view.php?id=33069
+ 39
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:הגשה מחר: בינה מלאכותית ואוריינות 
